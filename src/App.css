@@ -1,0 +1,11 @@
+.container {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+header, footer { text-align: center; }
+h1 { color: #0078d7; margin: 0 0 0.5rem; }
+.content { margin-top: 1.5rem; }

@@ -1,0 +1,781 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+/* Navbar */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.3); 
+  backdrop-filter: blur(10px); 
+  padding: 15px 30px; 
+  color: white;
+  position: fixed; 
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000; 
+  transition: all 0.3s ease;
+  min-height: 70px; 
+  box-sizing: border-box;
+}
+
+/* Efecto al hacer scroll */
+.navbar.scrolled {
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(15px);
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0; 
+}
+
+.logo-container img {
+  width: 60px; 
+  height: 60px;
+  margin-right: 12px;
+  filter: brightness(1.1); 
+}
+
+.logo-container h1 {
+  font-size: 22px;
+  margin: 0;
+  color: white; 
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); 
+  white-space: nowrap; 
+}
+
+/* Aliniacion del contenedor */
+.nav-container {
+  display: flex;
+  align-items: center;
+  gap: 40px; 
+}
+
+.nav-links {
+  display: flex;
+  gap: 30px; 
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.nav-links a {
+  color: white; 
+  text-decoration: none;
+  font-weight: 600; 
+  font-size: 16px;
+  transition: all 0.3s ease;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7); 
+  position: relative;
+  padding: 8px 0; 
+  white-space: nowrap; 
+}
+
+.nav-links a:hover {
+  color: #770707; 
+  transform: translateY(-2px);
+}
+
+/* Línea decorativa al hacer hover */
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: #f8f8f8;
+  transition: width 0.3s ease;
+}
+
+.nav-links a:hover::after {
+  width: 100%;
+}
+
+/* BOTÓN DE RESERVAS */
+.reserva-btn {
+  background: #5a0015; 
+  color: #fff !important;
+  text-decoration: none !important;
+  padding: 14px 28px;
+  border-radius: 35px;
+  font-weight: bold;
+  font-size: 16px;
+  box-shadow: 0 6px 20px rgba(90, 0, 21, 0.4);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  text-shadow: none;
+  border: 2px solid transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 120px; 
+  white-space: nowrap;
+  position: relative;
+  overflow: hidden;
+}
+
+.reserva-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.6s;
+}
+
+.reserva-btn:hover::before {
+  left: 100%;
+}
+
+.reserva-btn:hover {
+  background:#8b0505;
+  transform: scale(1.05) translateY(-2px);
+  box-shadow: 0 10px 25px rgba(237, 226, 226, 0.6);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.reserva-btn:active {
+  transform: scale(0.98) translateY(0);
+  box-shadow: 0 4px 15px rgba(255, 68, 68, 0.4);
+}
+
+/* Sección Hero */
+.hero {
+  background-image: url('/Imagenes Wine/Imagen3.jpg');
+  background-size: cover;
+  background-position: center;
+  height: 100vh; 
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  text-align: center;
+  margin-top: 0; 
+}
+
+/* Contenido del hero */
+.hero-text {
+  padding: 40px 20px; 
+  max-width: 80%;
+}
+
+/* TEXTO BIENVENIDO */
+.hero-welcome {
+font-size: 42px; 
+  margin-bottom: 0px;
+   margin-top: 0px ;
+  font-family: "Playfair Display", serif;
+  font-weight: 400; 
+  font-style: italic; 
+  color: #d4af37; 
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+  letter-spacing: 2px;
+}
+
+/* TÍTULO PRINCIPAL */
+.hero-text h2 {
+font-size: 48px;
+  margin-bottom: 0px;
+   margin-top: 0px;
+  font-family: "Playfair Display", serif;
+  font-weight: 700; 
+  color: #ffffff; 
+  text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.9);
+  letter-spacing: 3px; 
+  text-transform: uppercase;
+  line-height: 1.2;
+}
+
+
+.companyname {
+  font-family: "Playfair Display", serif;
+  font-size: large;
+  color: white; 
+}
+
+.botones-extra {
+  margin-top: 40px;
+  display: flex;
+  gap: 25px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.vino-button {
+  background: #5a0015;
+  color: white;
+  padding: 16px 32px;
+  border-radius: 30px;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 16px;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+  transition: all 0.3s ease;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.vino-button:hover {
+  background:  #890725;
+  transform: scale(1.05) translateY(-2px);
+  box-shadow: 0 12px 24px rgba(128, 0, 32, 0.5);
+  border: 2px solid #dedcd3;
+}
+
+/* SECCIÓN NOSOTROS */
+.nosotros-section {
+  padding: 80px 20px;
+  background: #f8f6f3;
+  position: relative;
+  overflow: hidden;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 2;
+}
+
+.nosotros-content {
+  display: flex;
+  gap: 40px;
+  align-items: center;
+  justify-content: center;
+}
+
+ /*Imagene Izquierda*/
+.nosotros-imagen-izq {
+  width: 120%;
+  height: 420px;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.nosotros-imagen-izq img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.nosotros-imagen-izq:hover img {
+  transform: scale(1.05);
+}
+
+.nosotros-text {
+  opacity: 0;
+  transform: translateY(50px);
+  transition: all 1s cubic-bezier(0.4, 0, 0.2, 1);
+  text-align: center;
+  padding: 40px;
+  max-width: 100%;
+}
+
+.nosotros-text.animate {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.nosotros-text h2 {
+  font-family: "Playfair Display", serif;
+  font-size: 48px;
+  font-weight: 400;
+  font-style: italic;
+  color: #4b0505;
+  margin-bottom: 20px;
+  letter-spacing: 1px;
+  line-height: 1.1;
+  position: relative;
+}
+
+.nosotros-subtitle {
+  font-size: 14px;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 30px;
+  font-weight: 500;
+}
+
+.nosotros-text p {
+  font-size: 16px;
+  color: #555; 
+  margin-bottom: 25px;
+  line-height: 1.8;
+  font-weight: 300;
+  letter-spacing: 0.3px;
+  max-width: 100%;;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.nosotros-text p strong {
+  color: #333;
+  font-weight: 600;
+}
+
+/* IMAGEN DERECHA */
+.nosotros-imagen-der {
+  width: 120%;
+  height: 420px;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.nosotros-imagen-der img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.nosotros-imagen-der:hover img {
+  transform: scale(1.05);
+}
+
+/* SECCIÓN CONTACTOS */
+
+.contactos-section {
+  padding: 40px 20px; 
+  background-image: url('/Imagenes Wine/vino-fondo.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  color: #f4e4c1;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Overlay con desenfoque y opacidad */
+.contactos-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(3px); 
+  z-index: 1;
+}
+
+.contactos-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  max-width: 1000px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 2;
+}
+
+/* Estilos para las columnas */
+.contactos-info,
+.contactos-datos {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.contactos-info.animate,
+.contactos-datos.animate {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Títulos */
+.contactos-content h3 {
+  font-family: "Playfair Display", serif;
+  font-size: 28px;
+  font-weight: 700;
+  color: #d4af37;
+  margin-bottom: 20px;
+  margin-left: 0;
+  position: relative;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+  text-align: center;
+}
+
+.contactos-datos h3 {
+  margin-left: 0;
+}
+
+/* INFORMACIÓN DEL RESTAURANTE */
+.contactos-info {
+  text-align: center;
+  position: relative;
+}
+
+.contactos-info p {
+  font-size: 18px;
+  color: #e8d5d5;
+  margin-bottom: 25px;
+  line-height: 1.6;
+  font-style: italic;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+}
+
+/* Logo del restaurante en contactos */
+.logo-home {
+  position: absolute;
+  top: 20px;
+  left: -100px; 
+  display: flex;
+  justify-content: flex-start;
+  margin: 0;
+  padding: 0;
+}
+
+.logo-home a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 80px; 
+  height: 80px; 
+  background: rgba(244, 228, 193, 0.15);
+  border: 3px solid rgba(212, 175, 55, 0.4);
+  border-radius: 50%;
+  text-decoration: none;
+  transition: all 0.4s ease;
+  backdrop-filter: blur(10px);
+  position: relative;
+  overflow: hidden;
+}
+
+.logo-home a::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(244, 228, 193, 0.3), transparent);
+  transition: left 0.6s;
+}
+
+.logo-home a:hover::before {
+  left: 100%;
+}
+
+.logo-home img {
+  width: 50px; 
+  height: 50px;
+  object-fit: contain;
+  transition: all 0.4s ease;
+  filter: brightness(1.2);
+}
+
+.logo-home a:hover {
+  background: rgba(244, 228, 193, 0.25);
+  border-color: #d4af37;
+  transform: translateY(-5px) scale(1.05);
+  box-shadow: 0 10px 25px rgba(212, 175, 55, 0.4);
+}
+
+.logo-home a:hover img {
+  transform: scale(1.1);
+  filter: brightness(1.4);
+}
+
+/*DATOS DE CONTACTO */
+.contactos-datos {
+  text-align: center;
+}
+
+.contacto-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 8px; 
+  margin-bottom: 25px; 
+  transition: all 0.3s ease;
+  text-align: center;
+}
+
+.contacto-item:hover {
+  transform: translateY(-2px);
+}
+
+.contacto-icon {
+  font-size: 28px; 
+  margin-top: 0px;
+  color: #d4af37;
+}
+
+.contacto-info strong {
+  display: block;
+  color: #f4e4c1;
+  font-size: 18px;
+  margin-bottom: 6px; 
+  font-weight: 600;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+}
+
+.contacto-info p {
+  margin: 0;
+  color: #e8d5d5;
+  font-size: 16px;
+  line-height: 1.4;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+}
+
+/* ICONOS SOCIALES  */
+.social-icons {
+  position: absolute;
+  bottom: 60px; 
+  left: 20px;
+  display: flex;
+  gap: 15px; 
+  z-index: 3;
+}
+
+.social-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 45px;
+  height: 45px; 
+  background: rgba(212, 175, 55, 0.2);
+  border: 2px solid rgba(212, 175, 55, 0.5);
+  border-radius: 50%;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  overflow: hidden;
+  backdrop-filter: blur(5px);
+}
+
+.social-icon img {
+  width: 25px;
+  height: 25px; 
+  object-fit: contain;
+  transition: transform 0.3s ease;
+}
+
+.social-icon:hover {
+  background: rgba(212, 175, 55, 0.4);
+  border-color: #d4af37;
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.social-icon:hover img {
+  transform: scale(1.1);
+}
+
+/* Colores para cada red social */
+.social-icon.facebook:hover {
+  background: rgba(24, 119, 242, 0.3);
+  border-color: #1877f2;
+}
+
+.social-icon.instagram:hover {
+  background: rgba(225, 48, 108, 0.3);
+  border-color: #e1306c;
+}
+
+.social-icon.waze:hover {
+  background: rgba(30, 170, 240, 0.3);
+  border-color: #1eaaf0;
+}
+
+/* SISTEMA DE MODALES*/
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  animation: fadeIn 0.3s ease;
+}
+
+.modal-content {
+  background-color: #fff;
+  margin: 5% auto;
+  padding: 0;
+  border-radius: 15px;
+  width: 90%;
+  max-width: 500px;
+  position: relative;
+  animation: slideIn 0.3s ease;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+
+.modal-content.login-modal {
+  max-width: 400px;
+}
+
+.modal-header {
+  background-color: #e74c3c;
+  color: white;
+  padding: 20px;
+  border-radius: 15px 15px 0 0;
+  text-align: center;
+  position: relative;
+}
+
+.modal-header h2 {
+  margin: 0;
+  font-family: "Playfair Display", serif;
+  font-size: 24px;
+}
+
+.modal-subtitle {
+  margin: 5px 0 0 0;
+  font-size: 14px;
+  opacity: 0.9;
+}
+
+.close {
+  position: absolute;
+  right: 15px;
+  top: 15px;
+  color: white;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: background-color 0.3s;
+}
+
+.close:hover {
+  background-color: rgba(255,255,255,0.2);
+}
+
+.modal-body {
+  padding: 30px;
+}
+
+.form-row {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.form-group {
+  flex: 1;
+}
+
+.form-group.full-width {
+  flex: 100%;
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: bold;
+  color: #333;
+  font-size: 14px;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 12px;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 14px;
+  transition: border-color 0.3s;
+  box-sizing: border-box;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: #e74c3c;
+}
+
+.form-group textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.confirm-btn {
+  width: 100%;
+  padding: 15px;
+  background-color: #e74c3c;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin-top: 10px;
+}
+
+.confirm-btn:hover {
+  background-color: #c0392b;
+}
+
+.register-link {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 14px;
+  color: #666;
+}
+
+.register-link a {
+  color: #e74c3c;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.register-link a:hover {
+  text-decoration: underline;
+}
+
+.usuario-info {
+  background-color: #f8f9fa;
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  border-left: 4px solid #e74c3c;
+}
+
+.usuario-info p {
+  margin: 0;
+  font-weight: bold;
+  color: #333;
+}
+
+/*ANIMACIONES */
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideIn {
+  from { 
+    opacity: 0;
+    transform: translateY(-50px);
+  }
+  to { 
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
