@@ -1,11 +1,11 @@
 import { useEffect, useRef } from 'react'
+import './App.css'
 import './style.css'
 
 export default function App() {
   const navbarRef = useRef<HTMLElement | null>(null)
 
   useEffect(() => {
-    // Navbar scrolled effect
     const onScroll = () => {
       const nav = navbarRef.current
       if (!nav) return
@@ -18,7 +18,6 @@ export default function App() {
   }, [])
 
   useEffect(() => {
-    // Simple appear-on-scroll for elements that use .animate
     const toAnimate = document.querySelectorAll<HTMLElement>(
       '.nosotros-text, .contactos-info, .contactos-datos'
     )
@@ -40,7 +39,7 @@ export default function App() {
   return (
     <>
       {/* NAVBAR */}
-      <nav className="navbar" ref={navbarRef as any}>
+      <nav className="navbar" ref={navbarRef}>
         <div className="logo-container">
           <img src="/Imagenes Wine/Imagen3.jpg" alt="Logo" />
           <h1 className="companyname">Wine & Cheese</h1>
@@ -61,7 +60,6 @@ export default function App() {
         <div className="hero-text">
           <p className="hero-welcome">Bienvenidos</p>
           <h2>Experiencias con vino y queso</h2>
-
           <div className="botones-extra">
             <a className="vino-button" href="#nosotros">Conócenos</a>
             <a className="vino-button" href="#contactos">Ubicación</a>
@@ -101,12 +99,10 @@ export default function App() {
       {/* CONTACTOS */}
       <section className="contactos-section" id="contactos">
         <div className="contactos-content">
-          {/* Información */}
           <div className="contactos-info">
             <h3>Visítanos</h3>
             <p>Ambiente acogedor, música suave, y una carta seleccionada.</p>
 
-            {/* Logo redondo (opcional) */}
             <div className="logo-home">
               <a href="#home" aria-label="Volver al inicio">
                 <img src="/Imagenes Wine/Imagen3.jpg" alt="Logo" />
@@ -114,7 +110,6 @@ export default function App() {
             </div>
           </div>
 
-          {/* Datos */}
           <div className="contactos-datos">
             <h3>Contacto</h3>
 
@@ -144,7 +139,6 @@ export default function App() {
           </div>
         </div>
 
-        {/* Social icons (usa tus imágenes si las tienes) */}
         <div className="social-icons">
           <a className="social-icon facebook" href="#" aria-label="Facebook">
             <img src="/Imagenes Wine/Imagen3.jpg" alt="" />
@@ -158,7 +152,7 @@ export default function App() {
         </div>
       </section>
 
-      {/* Simple example modal structure (hidden by default) */}
+      {/* MODAL */}
       <div id="loginModal" className="modal" role="dialog" aria-modal="true" aria-hidden="true">
         <div className="modal-content login-modal">
           <div className="modal-header">
