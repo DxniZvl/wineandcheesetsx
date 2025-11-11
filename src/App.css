@@ -9,3 +9,6 @@
 header, footer { text-align: center; }
 h1 { color: #0078d7; margin: 0 0 0.5rem; }
 .content { margin-top: 1.5rem; }
+
+.nav-links { list-style: none; display: flex; gap: 1rem; margin: 0; padding: 0; }
+.nav-links a { text-decoration: none; }
