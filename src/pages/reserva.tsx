@@ -1,0 +1,1 @@
+export default function Reserva() { return <h2>Página de Reservas</h2> }

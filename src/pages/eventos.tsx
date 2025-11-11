@@ -1,0 +1,1 @@
+export default function Eventos() { return <h2>Página Eventos</h2> }
