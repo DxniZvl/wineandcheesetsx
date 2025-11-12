@@ -1,25 +1,36 @@
 import { FormEvent, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { supabase } from '@./supabase'
 import '../style.css'
 
 export default function Login() {
   const [error, setError] = useState<string | null>(null)
   const navigate = useNavigate()
 
+  const markError = (ids: string[]) => {
+    ids.forEach(id => {
+      const el = document.getElementById(id)
+      el?.classList.add('input-error', 'shake')
+      setTimeout(() => el?.classList.remove('shake'), 300)
+    })
+  }
+  const clearMarks = () => {
+    ['email', 'password'].forEach(id => document.getElementById(id)?.classList.remove('input-error'))
+  }
+
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+    clearMarks()
     const data = Object.fromEntries(new FormData(e.currentTarget).entries())
     const email = String(data.login_email || '').trim()
     const pass = String(data.login_password || '')
 
     if (!email || !pass) {
       setError('Por favor completa todos los campos.')
+      markError([!email ? 'email' : '', !pass ? 'password' : ''].filter(Boolean))
       return
     }
-   
 
-    // DEMO: reemplazar con Supabase más adelante
+    // DEMO: reemplazar con backend real
     if (email === 'admin@wine.com' && pass === '1234') {
       localStorage.setItem('demo_auth', 'admin')
       navigate('/admin')
@@ -28,6 +39,7 @@ export default function Login() {
       navigate('/reservas')
     } else {
       setError('Correo o contraseña incorrectos.')
+      markError(['email', 'password'])
     }
   }
 
@@ -35,7 +47,7 @@ export default function Login() {
     <div
       style={{
         minHeight: '100vh',
-        paddingTop: '90px',              // despega del navbar fijo
+        paddingTop: '90px',
         backgroundImage: "url('/Imagenes Wine/Imagen2.jpg')",
         backgroundSize: 'cover',
         backgroundPosition: 'center',
@@ -43,18 +55,11 @@ export default function Login() {
         position: 'relative',
       }}
     >
-      {/* overlay del fondo */}
       <div
-        style={{
-          position: 'absolute',
-          inset: 0,
-          background: 'rgba(0,0,0,.35)',
-          zIndex: 1,
-        }}
+        style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,.35)', zIndex: 1 }}
         aria-hidden="true"
       />
 
-      {/* contenedor centrado */}
       <div
         style={{
           position: 'relative',
@@ -68,7 +73,6 @@ export default function Login() {
           padding: '20px'
         }}
       >
-        {/* tarjeta usando tus clases de “modal” */}
         <div className="modal-content login-modal" style={{ margin: 0, width: '100%' }}>
           <div className="modal-header">
             <h2>Iniciar Sesión</h2>
@@ -76,7 +80,17 @@ export default function Login() {
           </div>
 
           <div className="modal-body">
-            {error && <div className="error-message" style={{ marginTop: 0 }}>{error}</div>}
+            {/* Banner elegante */}
+            {error && (
+              <div className="wine-alert" role="alert" aria-live="assertive">
+                <div className="icon">!</div>
+                <div>
+                  <div className="title">Ups, algo salió mal</div>
+                  <p className="msg">{error}</p>
+                </div>
+                <button type="button" className="close" onClick={() => setError(null)} aria-label="Cerrar">×</button>
+              </div>
+            )}
 
             <form onSubmit={handleSubmit}>
               <div className="form-group full-width">
@@ -113,7 +127,6 @@ export default function Login() {
         </div>
       </div>
 
-      {/* botón volver (opcional) */}
       <div className="back-home" style={{ position: 'fixed', top: 20, left: 20, zIndex: 3 }}>
         <Link to="/" style={{ color: 'white', textDecoration: 'none', fontWeight: 'bold' }}>
           ← Volver al inicio

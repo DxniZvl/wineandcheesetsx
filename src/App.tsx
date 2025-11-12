@@ -1,88 +1,232 @@
-import { useEffect, useRef } from 'react'
-import { Routes, Route, NavLink } from 'react-router-dom'
-import Home from './pages/Home'
-import Menu from './pages/Menu'
-import Eventos from './pages/Eventos'
-import Reserva from './pages/Reserva'
-import Registro from './pages/Registro'
-import Login from './pages/Login'
-import Admin from './pages/Admin'
-import './App.css' // si quieres, o bórralo si no lo usas
+import React, { useState, useEffect } from 'react';
+import './style.css';
 
-export default function App() {
-  const navbarRef = useRef<HTMLElement | null>(null)
 
-  // Efecto scroll para navbar
+interface User {
+  id: string;
+  nombre: string;
+}
+
+const WineAndCheeseHome: React.FC = () => {
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [user, setUser] = useState<User | null>(null);
+
+  // Simular usuario logueado (aquí conectarías con tu backend real)
   useEffect(() => {
-    const onScroll = () => {
-      const nav = navbarRef.current
-      if (!nav) return
-      if (window.scrollY > 50) nav.classList.add('scrolled')
-      else nav.classList.remove('scrolled')
+    // Ejemplo: descomentar para simular usuario logueado
+    // setUser({ id: '1', nombre: 'Juan' });
+  }, []);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 50);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  useEffect(() => {
+    const observerOptions = {
+      threshold: 0.3,
+      rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('animate');
+        }
+      });
+    }, observerOptions);
+
+    const contactosObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const columnas = entry.target.querySelectorAll('.contactos-info, .contactos-datos');
+          columnas.forEach((columna, index) => {
+            setTimeout(() => {
+              columna.classList.add('animate');
+            }, index * 200);
+          });
+          contactosObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.3 });
+
+    const nosotrosText = document.getElementById('nosotros-text');
+    if (nosotrosText) observer.observe(nosotrosText);
+
+    const contactosSection = document.querySelector('.contactos-section');
+    if (contactosSection) contactosObserver.observe(contactosSection);
+
+    return () => {
+      if (nosotrosText) observer.unobserve(nosotrosText);
+      if (contactosSection) contactosObserver.unobserve(contactosSection);
+    };
+  }, []);
+
+  const scrollToSection = (sectionId: string) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
-    window.addEventListener('scroll', onScroll)
-    onScroll()
-    return () => window.removeEventListener('scroll', onScroll)
-  }, [])
-
-  // Animaciones de aparición (opcional: Home/Contactos)
-  useEffect(() => {
-    const toAnimate = document.querySelectorAll<HTMLElement>(
-      '.nosotros-text, .contactos-info, .contactos-datos'
-    )
-    const io = new IntersectionObserver(
-      entries => {
-        entries.forEach(e => {
-          if (e.isIntersecting) {
-            e.target.classList.add('animate')
-            io.unobserve(e.target)
-          }
-        })
-      },
-      { threshold: 0.2 }
-    )
-    toAnimate.forEach(el => io.observe(el))
-    return () => io.disconnect()
-  }, [])
+  };
 
   return (
-    <>
-      {/* NAVBAR (mismas clases que tu CSS) */}
-      <header className="navbar" ref={navbarRef as any}>
+    <div>
+      <header className={`navbar ${isScrolled ? 'scrolled' : ''}`}>
         <div className="logo-container">
-          <NavLink to="/">
-            <img src="/Imagenes Wine/Imagen3.jpg" alt="Logo" />
-          </NavLink>
-          <h1 className="companyname">Wine & Cheese</h1>
+          <img src="Imagenes Wine/Logo.png" alt="Logo de Wine and Cheese" />
+          <h1 className="companyname">Wine and Cheese</h1>
         </div>
 
         <div className="nav-container">
-          <ul className="nav-links">
-            <li><NavLink to="/">Inicio</NavLink></li>
-            <li><NavLink to="/menu">Menú</NavLink></li>
-            <li><NavLink to="/eventos">Eventos</NavLink></li>
-            <li><NavLink to="/reservas">Reservas</NavLink></li>
-            <li><NavLink to="/login">Login</NavLink></li>
-          </ul>
-          <NavLink className="reserva-btn" to="/reservas">Reservar</NavLink>
+          <nav className="nav-links">
+            <a href="#nosotros" onClick={(e) => { e.preventDefault(); scrollToSection('nosotros'); }}>
+              Nosotros
+            </a>
+            <a href="/menu">Menú</a>
+            <a href="/eventos">Eventos</a>
+            <a href="/eventos#juegos">Juegos</a>
+            <a href="#contactos" onClick={(e) => { e.preventDefault(); scrollToSection('contactos'); }}>
+              Contacto
+            </a>
+          </nav>
+
+          {user ? (
+            <div className="user-menu">
+              <span>¡Hola, {user.nombre}!</span>
+              <a href="/mis-reservas" className="reserva-btn">Mis Reservas</a>
+              <a href="/logout" className="logout-btn">Salir</a>
+            </div>
+          ) : (
+            <a href="/login" className="reserva-btn">Reservas</a>
+          )}
         </div>
       </header>
 
-      {/* CONTENIDO */}
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/menu" element={<Menu />} />
-        <Route path="/eventos" element={<Eventos />} />
-        <Route path="/reservas" element={<Reserva />} />
-        <Route path="/registro" element={<Registro />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/admin" element={<Admin />} />
-      </Routes>
+      <section className="hero">
+        <div className="hero-text">
+          <div className="hero-welcome">
+            Bienvenido{user ? `, ${user.nombre}` : ''}
+          </div>
+          <h2>Wine and Cheese</h2>
 
-      {/* FOOTER simple */}
-      <footer style={{ textAlign: 'right', padding: '2rem', color: '#333' }}>
-        © {new Date().getFullYear()} Wine & Cheese
-      </footer>
-    </>
-  )
-}
+          <div className="botones-extra">
+            <a href="/cata-de-vinos" className="vino-button">Ver Catálogo</a>
+            <a href="/menu" className="vino-button">Menú</a>
+            {user && (
+              <a href="/hacer-reserva" className="vino-button">Reservar Mesa</a>
+            )}
+          </div>
+        </div>
+      </section>
+
+      <section className="nosotros-section" id="nosotros">
+        <div className="container">
+          <div className="nosotros-content">
+            <div className="nosotros-imagen-izq">
+              <img src="Imagenes Wine/nosotros-izq.jpg" alt="Experiencia gastronómica" />
+            </div>
+
+            <div className="nosotros-text" id="nosotros-text">
+              <h2>Nosotros</h2>
+              <p className="nosotros-subtitle">Donde el sabor se convierte en arte</p>
+
+              <p>
+                En <strong>Wine and Cheese</strong> transformamos cada encuentro gastronómico en una experiencia única.
+                Seleccionamos con dedicación los mejores vinos y quesos del mundo para crear maridajes que despiertan
+                los sentidos y cuentan historias.
+              </p>
+
+              <p>
+                Nuestro equipo de <strong>sommeliers y maestros queseros</strong> combina experiencia y pasión para
+                ofrecer armonías que trascienden lo tradicional. Creemos que la gastronomía es un arte que se comparte,
+                y cada detalle está pensado para dejar una huella en tu memoria mucho después de la última copa.
+              </p>
+            </div>
+
+            <div className="nosotros-imagen-der">
+              <img src="Imagenes Wine/nosotros-der.jpg" alt="Selección de quesos y vinos" />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="contactos-section" id="contactos">
+        <div className="container">
+          <div className="contactos-content">
+            <div className="contactos-info">
+              <h3>Información del Restaurante</h3>
+              <p>Vive la experiencia gastronómica más exclusiva de la ciudad</p>
+
+              <div className="logo-home">
+                <a href="/" title="Volver al inicio">
+                  <img src="Imagenes Wine/Logo.png" alt="Logo Wine and Cheese" />
+                </a>
+              </div>
+            </div>
+
+            <div className="contactos-datos">
+              <h3>Contáctanos</h3>
+
+              <div className="contacto-item">
+                <span className="contacto-icon">📍</span>
+                <div className="contacto-info">
+                  <strong>Ubicación</strong>
+                  <p>Alajuela, La Ceiba, Costa Rica</p>
+                </div>
+              </div>
+
+              <div className="contacto-item">
+                <span className="contacto-icon">📞</span>
+                <div className="contacto-info">
+                  <strong>Teléfono</strong>
+                  <p>+506 64306861</p>
+                </div>
+              </div>
+
+              <div className="contacto-item">
+                <span className="contacto-icon">✉️</span>
+                <div className="contacto-info">
+                  <strong>Email</strong>
+                  <p>info@wineandcheese.cr</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="social-icons">
+              <a 
+                href="https://www.facebook.com/p/Wine-and-Cheese-61550695744673/?locale=es_LA" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="social-icon facebook"
+              >
+                <img src="Imagenes Wine/facebook-icon.png" alt="Facebook Wine and Cheese" />
+              </a>
+              <a 
+                href="https://www.instagram.com/wineandcheesecr/?hl=es" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="social-icon instagram"
+              >
+                <img src="Imagenes Wine/instagram-icon.png" alt="Instagram Wine and Cheese" />
+              </a>
+              <a 
+                href="https://waze.com/ul/hd1u15dh8y" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="social-icon waze"
+              >
+                <img src="Imagenes Wine/Waze-icon.png" alt="Waze Wine and Cheese" />
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+};
+
+export default WineAndCheeseHome;
