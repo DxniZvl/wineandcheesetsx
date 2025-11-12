@@ -1,5 +1,6 @@
 import { FormEvent, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { supabase } from '@./supabase'
 import '../style.css'
 
 export default function Login() {
@@ -16,6 +17,7 @@ export default function Login() {
       setError('Por favor completa todos los campos.')
       return
     }
+   
 
     // DEMO: reemplazar con Supabase más adelante
     if (email === 'admin@wine.com' && pass === '1234') {
