@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './style.css';
+import TestSupabase from "./pages/TestSupabase";
+
 
 
 interface User {
