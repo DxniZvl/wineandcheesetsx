@@ -1,11 +1,22 @@
-import { FormEvent, useState } from 'react'
+import { FormEvent, useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import '../style.css'
+import { supabase } from '../supabaseClient'   // ✅ NEW
+
 
 export default function Registro() {
   const [error, setError] = useState<string | null>(null)
   const [ok, setOk] = useState<string | null>(null)
+  const [loading, setLoading] = useState(false) // ✅ NEW
   const navigate = useNavigate()
+  useEffect(() => {
+  if (ok) {
+    const timer = setTimeout(() => navigate('/login'), 1200)
+    return () => clearTimeout(timer)
+  }
+}, [ok, navigate])
+
+  
 
   const markError = (ids: string[]) => {
     ids.forEach(id => {
@@ -20,70 +31,105 @@ export default function Registro() {
     )
   }
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    clearMarks()
-    setError(null)
-    setOk(null)
+  // ⬇⬇⬇ make it async and insert in Supabase
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+  e.preventDefault()
+  clearMarks()
+  setError(null)
+  setOk(null)
+  setLoading(true)
 
-    const data = Object.fromEntries(new FormData(e.currentTarget).entries())
+  const data = Object.fromEntries(new FormData(e.currentTarget).entries())
 
-    const nombre = String(data.nombre || '').trim()
-    const apellido = String(data.apellido || '').trim()
-    const email = String(data.email || '').trim()
-    const pass = String(data.password || '')
-    const pass2 = String(data.password2 || '')
-    const fecha = String(data.fecha_nacimiento || '')
+  const nombre = String(data.nombre || '').trim()
+  const apellido = String(data.apellido || '').trim()
+  const email = String(data.email || '').trim()
+  const pass = String(data.password || '')
+  const pass2 = String(data.password2 || '')
+  const fecha = String(data.fecha_nacimiento || '')
 
-    if (!nombre || !apellido || !email || !pass || !pass2 || !fecha) {
-      setError('Por favor completa todos los campos.')
-      const ids = [
-        !nombre && 'nombre',
-        !apellido && 'apellido',
-        !email && 'email',
-        !fecha && 'fecha_nacimiento',
-        !pass && 'password',
-        !pass2 && 'password2',
-      ].filter(Boolean) as string[]
-      markError(ids)
-      return
-    }
-
-    const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
-    if (!emailOk) {
-      setError('Correo inválido.')
-      markError(['email'])
-      return
-    }
-
-    if (pass.length < 6) {
-      setError('La contraseña debe tener al menos 6 caracteres.')
-      markError(['password'])
-      return
-    }
-    if (pass !== pass2) {
-      setError('Las contraseñas no coinciden.')
-      markError(['password','password2'])
-      return
-    }
-
-    // Edad mínima 18
-    const nacimiento = new Date(fecha)
-    const hoy = new Date()
-    const edad =
-      hoy.getFullYear() - nacimiento.getFullYear() -
-      (hoy < new Date(hoy.getFullYear(), nacimiento.getMonth(), nacimiento.getDate()) ? 1 : 0)
-
-    if (isNaN(edad) || edad < 18) {
-      setError('Debes ser mayor de 18 años para registrarte.')
-      markError(['fecha_nacimiento'])
-      return
-    }
-
-    // DEMO: conectar backend/Supabase después
-    setOk('Cuenta creada correctamente. Redirigiendo al login…')
-    setTimeout(() => navigate('/login'), 1200)
+  if (!nombre || !apellido || !email || !pass || !pass2 || !fecha) {
+    setError('Por favor completa todos los campos.')
+    const ids = [
+      !nombre && 'nombre',
+      !apellido && 'apellido',
+      !email && 'email',
+      !fecha && 'fecha_nacimiento',
+      !pass && 'password',
+      !pass2 && 'password2',
+    ].filter(Boolean) as string[]
+    markError(ids)
+    setLoading(false)
+    return
   }
+
+  const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
+  if (!emailOk) {
+    setError('Correo inválido.')
+    markError(['email'])
+    setLoading(false)
+    return
+  }
+
+  if (pass.length < 6) {
+    setError('La contraseña debe tener al menos 6 caracteres.')
+    markError(['password'])
+    setLoading(false)
+    return
+  }
+  if (pass !== pass2) {
+    setError('Las contraseñas no coinciden.')
+    markError(['password','password2'])
+    setLoading(false)
+    return
+  }
+
+  // Edad mínima 18
+  const nacimiento = new Date(fecha)
+  const hoy = new Date()
+  const edad =
+    hoy.getFullYear() - nacimiento.getFullYear() -
+    (hoy < new Date(hoy.getFullYear(), nacimiento.getMonth(), nacimiento.getDate()) ? 1 : 0)
+
+  if (isNaN(edad) || edad < 18) {
+    setError('Debes ser mayor de 18 años para registrarte.')
+    markError(['fecha_nacimiento'])
+    setLoading(false)
+    return
+  }
+
+  // 👉 Insertar en Supabase (sin try/catch)
+  const { error: insertError } = await supabase
+    .from('usuarios')
+    .insert([
+      {
+        nombre,
+        apellido,
+        email,
+        password: pass, // solo para pruebas, ideal usar Auth/hashed
+      },
+    ])
+
+  if (insertError) {
+    console.error('Error al insertar usuario:', insertError)
+    // 23505 = unique_violation (email repetido)
+    if ((insertError as any).code === '23505') {
+      setError('Este correo ya está registrado.')
+    } else {
+      setError('Ocurrió un error al crear la cuenta.')
+    }
+    setLoading(false)
+    return
+  }
+
+  // ✅ éxito
+  // éxito
+  setOk('Cuenta creada correctamente. Redirigiendo al login…')
+  ;(e.currentTarget as HTMLFormElement).reset()
+  setLoading(false)
+
+}
+//fin del handlesumbit
 
   return (
     <div
@@ -122,7 +168,6 @@ export default function Registro() {
           </div>
 
           <div className="modal-body">
-            {/* Banner elegante */}
             {error && (
               <div className="wine-alert" role="alert" aria-live="assertive">
                 <div className="icon">!</div>
@@ -177,7 +222,9 @@ export default function Registro() {
                 </div>
               </div>
 
-              <button type="submit" className="confirm-btn">Crear cuenta</button>
+              <button type="submit" className="confirm-btn" disabled={loading}>
+                {loading ? 'Creando cuenta…' : 'Crear cuenta'}
+              </button>
             </form>
 
             <div className="register-link">

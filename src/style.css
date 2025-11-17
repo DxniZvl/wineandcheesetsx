@@ -872,3 +872,43 @@ font-size: 48px;
   30%, 50%, 70% { transform: translateX(-4px); }
   40%, 60% { transform: translateX( 4px); }
 }
+/* Contenedor de usuario en el navbar */
+.user-menu {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Texto "¡Hola, Daniel!" */
+.user-menu span {
+  color: #ffffff;
+  font-weight: 600;
+}
+
+/* Botón de cerrar sesión */
+.logout-btn {
+  background: transparent;
+  border: 1px solid #ffffff;
+  color: #ffffff;
+  padding: 6px 14px;
+  border-radius: 999px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 600;
+  transition: background 0.2s ease, color 0.2s ease,
+              transform 0.1s ease, box-shadow 0.1s ease;
+}
+
+/* Hover bonito */
+.logout-btn:hover {
+  background: #ffffff;
+  color: #5a0015; /* o el vino tinto que uses en .reserva-btn */
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+}
+
+/* Click */
+.logout-btn:active {
+  transform: translateY(0);
+  box-shadow: none;
+}

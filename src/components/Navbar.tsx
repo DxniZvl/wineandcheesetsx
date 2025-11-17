@@ -1,17 +1,18 @@
 // src/components/Navbar.tsx
 import React, { useEffect } from "react";
-// Local fallback for useAuth when ../context/AuthContext is not present.
-// Replace with: import { useAuth } from "../context/AuthContext";
-// once you add the real AuthContext file.
-type User = { id: string; name?: string } | null;
-const useAuth = (): { user: User } => {
-  // Default to no authenticated user; adapt to your real auth implementation.
-  return { user: null };
-};
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+
+import { getCurrentUser, clearCurrentUser, isAdmin } from "../auth"; 
+// 👆 This replaces the fake useAuth()
 
 const Navbar: React.FC = () => {
-  const { user } = useAuth();
+  const navigate = useNavigate();
+  const user = getCurrentUser(); // 👈 read session from localStorage
+
+  const handleLogout = () => {
+    clearCurrentUser();        // remove session
+    navigate("/");            // redirect to Home
+  };
 
   useEffect(() => {
     const onScroll = () => {
@@ -42,10 +43,40 @@ const Navbar: React.FC = () => {
           <a href="/#contactos">Contacto</a>
         </nav>
 
+        {/* ------- RIGHT SIDE (User actions) ------- */}
         {user ? (
-          <Link to="/reservas" className="reserva-btn">Mis Reservas</Link>
+          <div style={{ display: "flex", gap: "12px", alignItems: "center" }}>
+            {/* Show name */}
+            <span style={{ color: "white", fontWeight: "bold" }}>
+              Hola, {user.nombre}
+              {isAdmin(user) && " (Admin)"}
+            </span>
+
+            {/* Reservations button */}
+            <Link to="/Reserva" className="reserva-btn">
+              Mis Reservas
+            </Link>
+
+            {/* Logout */}
+            <button
+              onClick={handleLogout}
+              style={{
+                background: "transparent",
+                border: "1px solid white",
+                color: "white",
+                padding: "6px 12px",
+                borderRadius: "4px",
+                cursor: "pointer",
+              }}
+            >
+              Cerrar sesión
+            </button>
+          </div>
         ) : (
-          <Link to="/login" className="reserva-btn">Reservas</Link>
+          // If no logged user
+          <Link to="/login" className="reserva-btn">
+            Reservas
+          </Link>
         )}
       </div>
     </header>

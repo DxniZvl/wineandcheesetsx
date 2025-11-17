@@ -127,7 +127,7 @@ export default function Eventos() {
             inolvidables.
           </p>
           <a
-            href="/reservas"
+            href="/Reserva"
             className="reserva-btn"
             style={{
               display: "inline-block",

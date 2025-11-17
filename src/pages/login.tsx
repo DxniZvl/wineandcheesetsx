@@ -1,6 +1,9 @@
+import { getCurrentUser, setCurrentUser, isAdmin } from '../auth'
 import { FormEvent, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import '../style.css'
+import { supabase } from '../supabaseClient'
+
 
 export default function Login() {
   const [error, setError] = useState<string | null>(null)
@@ -17,31 +20,59 @@ export default function Login() {
     ['email', 'password'].forEach(id => document.getElementById(id)?.classList.remove('input-error'))
   }
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    clearMarks()
-    const data = Object.fromEntries(new FormData(e.currentTarget).entries())
-    const email = String(data.login_email || '').trim()
-    const pass = String(data.login_password || '')
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+  e.preventDefault()
+  clearMarks()
+  setError(null)
 
-    if (!email || !pass) {
-      setError('Por favor completa todos los campos.')
-      markError([!email ? 'email' : '', !pass ? 'password' : ''].filter(Boolean))
-      return
-    }
+  const data = Object.fromEntries(new FormData(e.currentTarget).entries())
 
-    // DEMO: reemplazar con backend real
-    if (email === 'admin@wine.com' && pass === '1234') {
-      localStorage.setItem('demo_auth', 'admin')
-      navigate('/admin')
-    } else if (email === 'user@wine.com' && pass === '1234') {
-      localStorage.setItem('demo_auth', 'cliente')
-      navigate('/reservas')
-    } else {
-      setError('Correo o contraseña incorrectos.')
-      markError(['email', 'password'])
-    }
+  const email = String(data.login_email || '').trim()
+  const pass = String(data.login_password || '')
+
+  if (!email || !pass) {
+    setError('Por favor completa todos los campos.')
+    markError([!email ? 'email' : '', !pass ? 'password' : ''].filter(Boolean))
+    return
   }
+
+  // 🔍 Buscar usuario por email en Supabase
+  const { data: user, error: queryError } = await supabase
+    .from('usuarios')
+    .select('*')
+    .eq('email', email)
+    .single()
+
+  if (queryError || !user) {
+    setError('Correo o contraseña incorrectos.')
+    markError(['email', 'password'])
+    return
+  }
+
+  // 🔐 Comparar contraseña
+  if (user.password !== pass) {
+    setError('Correo o contraseña incorrectos.')
+    markError(['email', 'password'])
+    return
+  }
+
+  // ⭐ Guardar datos del usuario logueado
+  setCurrentUser({
+    id: user.id,
+    nombre: user.nombre,
+    apellido: user.apellido,
+    email: user.email,
+  })
+
+  // 🔁 Redirigir
+  // Aquí decides:
+  // Ejemplo: si el correo es admin, va al panel
+  if (isAdmin(user)) {
+    navigate('/admin')
+  } else {
+    navigate('/')
+  }
+}
 
   return (
     <div
