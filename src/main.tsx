@@ -12,6 +12,8 @@ import Login from "./pages/Login";
 import Registro from "./pages/Registro";
 import Reserva from "./pages/Reserva";
 import Admin from "./pages/Admin";
+import TestSupabase from "./pages/TestSupabase";
+
 
 createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
