@@ -139,7 +139,7 @@ const WineAndCheeseHome: React.FC = () => {
                 type="button"
                 onClick={handleLogout}
               >
-                Salir
+                Cerrar Sesion
               </button>
             </div>
           ) : (

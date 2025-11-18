@@ -13,6 +13,7 @@ import Registro from "./pages/Registro";
 import Reserva from "./pages/Reserva";
 import Admin from "./pages/Admin";
 import TestSupabase from "./pages/TestSupabase";
+import MisReservas from "./pages/MisReservas";
 
 
 createRoot(document.getElementById("root")!).render(
@@ -27,6 +28,7 @@ createRoot(document.getElementById("root")!).render(
         <Route path="/reserva" element={<Reserva />} />
         <Route path="/admin" element={<Admin />} />
         <Route path="/test" element={<TestSupabase />} />
+        <Route path="/mis-reservas" element={<MisReservas />} />
 
         {/* Si quieres 404 luego: <Route path="*" element={<NotFound />} /> */}
       </Routes>

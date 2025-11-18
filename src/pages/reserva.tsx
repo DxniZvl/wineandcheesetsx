@@ -1,36 +1,73 @@
 import { FormEvent, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import '../style.css'
+import { supabase } from '../supabaseClient'
+import { getCurrentUser } from '../auth'
 
 export default function Reserva() {
   const navigate = useNavigate()
   const [error, setError] = useState<string | null>(null)
   const [ok, setOk] = useState<string | null>(null)
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     setError(null)
     setOk(null)
 
+    const user = getCurrentUser()
+    if (!user) {
+      setError('Debes iniciar sesión para hacer una reserva.')
+      return
+    }
+
     const data = Object.fromEntries(new FormData(e.currentTarget).entries())
-    const nombre = String(data.nombre || '').trim()
+    const nombre = String(data.nombre || '').trim()           // ← se usará solo visual
     const personas = Number(data.personas || 0)
     const fecha = String(data.fecha || '').trim()
     const hora = String(data.hora || '').trim()
     const tipo = String(data.tipo || '').trim()
+    const detalles = String(data.mensaje || '').trim()
 
     if (!nombre || !fecha || !hora || !tipo || !personas) {
       setError('Por favor completa todos los campos.')
       return
     }
 
-    // DEMO → simulación
-    setOk('Reserva registrada correctamente 🍷')
+    if (personas <= 0) {
+      setError('La cantidad de personas debe ser al menos 1.')
+      return
+    }
+
+    // ------------------------------------
+    //  🚀 INSERTAR RESERVA EN SUPABASE
+    // ------------------------------------
+    const { error: insertError } = await supabase
+      .from('reservas')
+      .insert([
+        {
+          usuario_id: user.id,
+          fecha_reserva: fecha,
+          hora_reserva: hora,
+          numero_comensales: personas,
+          tipo_reserva: tipo,
+          detalles_adicionales: detalles || null,
+          // estado lo pone la BD como 'pendiente'
+        },
+      ])
+
+
+    if (insertError) {
+      console.error('Error al guardar reserva:', insertError)
+      setError(`Hubo un error guardando la reserva: ${insertError.message}`)
+      return
+    }
+
+
+    setOk('Reserva registrada correctamente')
     e.currentTarget.reset()
 
-    setTimeout(() => {
-      navigate('/')
-    }, 1500)
+    setTimeout(() => navigate('/mis-reservas'), 1500)
+
   }
 
   return (
@@ -54,7 +91,6 @@ export default function Reserva() {
           zIndex: 1,
           backdropFilter: 'blur(4px)',
         }}
-        aria-hidden="true"
       />
 
       <div
@@ -67,7 +103,7 @@ export default function Reserva() {
           alignItems: 'center',
           justifyContent: 'center',
           minHeight: 'calc(100vh - 90px)',
-          padding: '20px'
+          padding: '20px',
         }}
       >
         <div className="modal-content" style={{ width: '100%', backgroundColor: '#fff' }}>

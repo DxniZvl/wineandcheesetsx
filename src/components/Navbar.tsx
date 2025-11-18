@@ -59,18 +59,12 @@ const Navbar: React.FC = () => {
 
             {/* Logout */}
             <button
-              onClick={handleLogout}
-              style={{
-                background: "transparent",
-                border: "1px solid white",
-                color: "white",
-                padding: "6px 12px",
-                borderRadius: "4px",
-                cursor: "pointer",
-              }}
-            >
-              Cerrar sesión
-            </button>
+                className="logout-btn"
+                type="button"
+                onClick={handleLogout}
+              >
+                Cerrar Sesion
+              </button>
           </div>
         ) : (
           // If no logged user
