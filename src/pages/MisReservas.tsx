@@ -77,13 +77,13 @@ export default function MisReservas() {
   const getTipoLabel = (tipo: TipoReserva) => {
     switch (tipo) {
       case 'cata':
-        return '🍷 Cata de vinos'
+        return 'Cata de vinos'
       case 'quesos':
-        return '🧀 Tabla de quesos'
+        return 'Tabla de quesos'
       case 'cena':
-        return '🍽 Cena maridaje'
+        return 'Cena maridaje'
       case 'privado':
-        return '🎉 Evento privado'
+        return 'Evento privado'
       default:
         return tipo
     }
@@ -197,7 +197,7 @@ export default function MisReservas() {
               <button
                 type="button"
                 className="link-button"
-                onClick={() => navigate('/reservas')}
+                onClick={() => navigate('/reserva')}
               >
                 Reservar ahora
               </button>

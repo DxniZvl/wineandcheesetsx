@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import './style.css';
 import { useNavigate } from 'react-router-dom';
-
 import { getCurrentUser, clearCurrentUser } from './auth';
+import ChatBot from './ChatBot';
 
 interface User {
   id: string;
@@ -130,7 +130,7 @@ const WineAndCheeseHome: React.FC = () => {
               <button
                 className="reserva-btn"
                 type="button"
-                onClick={() => navigate('/reservas')}
+                onClick={() => navigate('/mis-reservas')}
               >
                 Mis Reservas
               </button>
@@ -301,6 +301,8 @@ const WineAndCheeseHome: React.FC = () => {
           </div>
         </div>
       </section>
+      {/* Bot de ayuda flotante */}
+      <ChatBot />
     </div>
   );
 };

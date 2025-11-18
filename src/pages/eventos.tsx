@@ -1,9 +1,15 @@
 import React, { useEffect, useRef } from "react";
 import Navbar from "../components/Navbar";
 import "../style.css";
+import { getCurrentUser } from "../auth";
+import { useNavigate } from "react-router-dom";
+
 
 export default function Eventos() {
   const rootRef = useRef<HTMLDivElement | null>(null);
+  const navigate = useNavigate();
+  const user = getCurrentUser();
+
 
   // Carrusel automático (mismo comportamiento que en Menu)
   useEffect(() => {
@@ -126,8 +132,14 @@ export default function Eventos() {
             Reserva tu lugar en nuestros exclusivos eventos y vive momentos
             inolvidables.
           </p>
-          <a
-            href="/Reserva"
+          <button
+            onClick={() => {
+              if (!user) {
+                navigate("/login");
+              } else {
+                navigate("/Reserva");
+              }
+            }}
             className="reserva-btn"
             style={{
               display: "inline-block",
@@ -137,7 +149,8 @@ export default function Eventos() {
             }}
           >
             Reserva Ahora
-          </a>
+          </button>
+
         </div>
       </section>
 

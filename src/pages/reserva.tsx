@@ -4,10 +4,38 @@ import '../style.css'
 import { supabase } from '../supabaseClient'
 import { getCurrentUser } from '../auth'
 
+type DatosReserva = {
+  nombre: string
+  personas: number
+  fecha: string
+  hora: string
+  tipo: string
+}
+
+// función de validación para limpiar handleSubmit
+function validarReserva({ nombre, personas, fecha, hora, tipo }: DatosReserva): string | null {
+  if (!nombre || !fecha || !hora || !tipo || !personas) {
+    return 'Por favor completa todos los campos.'
+  }
+  
+  if (personas <= 0) {
+    return 'La cantidad de personas debe ser al menos 1.'
+  }
+
+  // Validar fecha futura (no permitir ayer o antes)
+  const hoy = new Date().toISOString().split('T')[0] // "yyyy-mm-dd"
+  if (fecha < hoy) {
+    return 'La fecha debe ser futura.'
+  }
+
+  return null
+}
+
 export default function Reserva() {
   const navigate = useNavigate()
   const [error, setError] = useState<string | null>(null)
   const [ok, setOk] = useState<string | null>(null)
+  const [loading, setLoading] = useState(false)
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -20,27 +48,25 @@ export default function Reserva() {
       return
     }
 
-    const data = Object.fromEntries(new FormData(e.currentTarget).entries())
-    const nombre = String(data.nombre || '').trim()           // ← se usará solo visual
-    const personas = Number(data.personas || 0)
-    const fecha = String(data.fecha || '').trim()
-    const hora = String(data.hora || '').trim()
-    const tipo = String(data.tipo || '').trim()
-    const detalles = String(data.mensaje || '').trim()
+    if (loading) return
+    setLoading(true)
 
-    if (!nombre || !fecha || !hora || !tipo || !personas) {
-      setError('Por favor completa todos los campos.')
+    const formData = new FormData(e.currentTarget)
+    const nombre = String(formData.get('nombre') || '').trim()
+    const personas = Number(formData.get('personas') || 0)
+    const fecha = String(formData.get('fecha') || '').trim()
+    const hora = String(formData.get('hora') || '').trim()
+    const tipo = String(formData.get('tipo') || '').trim()
+    const detalles = String(formData.get('mensaje') || '').trim()
+
+    const err = validarReserva({ nombre, personas, fecha, hora, tipo })
+    if (err) {
+      setError(err)
+      setLoading(false)
       return
     }
 
-    if (personas <= 0) {
-      setError('La cantidad de personas debe ser al menos 1.')
-      return
-    }
-
-    // ------------------------------------
-    //  🚀 INSERTAR RESERVA EN SUPABASE
-    // ------------------------------------
+    // INSERTAR RESERVA EN SUPABASE
     const { error: insertError } = await supabase
       .from('reservas')
       .insert([
@@ -55,18 +81,18 @@ export default function Reserva() {
         },
       ])
 
-
     if (insertError) {
       console.error('Error al guardar reserva:', insertError)
-      setError(`Hubo un error guardando la reserva: ${insertError.message}`)
+      setError(insertError.details || insertError.message || 'Error desconocido al guardar la reserva.')
+      setLoading(false)
       return
     }
 
-
     setOk('Reserva registrada correctamente')
     e.currentTarget.reset()
+    setLoading(false)
 
-    setTimeout(() => navigate('/mis-reservas'), 1500)
+    
 
   }
 
@@ -113,34 +139,121 @@ export default function Reserva() {
           </div>
 
           <div className="modal-body">
-            {error && <div className="error-message">{error}</div>}
-            {ok && (
-              <div className="usuario-info">
-                <p>{ok}</p>
+            {error && (
+              <div className="wine-alert" role="alert" aria-live="assertive">
+                <div className="icon">!</div>
+                <div>
+                  <div className="title">No pudimos completar tu reserva</div>
+                  <p className="msg">{error}</p>
+                </div>
+                <button
+                  type="button"
+                  className="close"
+                  onClick={() => setError(null)}
+                  aria-label="Cerrar"
+                >
+                  ×
+                </button>
               </div>
             )}
+
+            {ok && (
+              <div
+                className="wine-alert"
+                style={{
+                  background: "#e7f7ee",
+                  borderColor: "#badbcc",
+                  color: "#0f5132",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "12px",
+                  marginBottom: "16px",
+                }}
+              >
+                <div
+                  className="icon"
+                  style={{
+                    background: "#0f5132",
+                    color: "white",
+                    borderRadius: "50%",
+                    width: "28px",
+                    height: "28px",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    fontWeight: "bold",
+                  }}
+                >
+                  ✓
+                </div>
+
+                <div style={{ flex: 1 }}>
+                  <div className="title" style={{ fontWeight: 600 }}>
+                    Reserva completada
+                  </div>
+                  <p className="msg" style={{ margin: 0 }}>{ok}</p>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() => navigate('/mis-reservas')}
+                  style={{
+                    background: "#5a0015",
+                    color: "white",
+                    border: "none",
+                    padding: "8px 14px",
+                    borderRadius: "8px",
+                    cursor: "pointer",
+                    fontWeight: 600,
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  Ver mis reservas
+                </button>
+              </div>
+            )}
+
 
             <form onSubmit={handleSubmit}>
               <div className="form-row">
                 <div className="form-group">
                   <label htmlFor="nombre">Nombre</label>
-                  <input id="nombre" name="nombre" type="text" placeholder="Tu nombre completo" />
+                  <input
+                    id="nombre"
+                    name="nombre"
+                    type="text"
+                    placeholder="Tu nombre completo"
+                  />
                 </div>
 
                 <div className="form-group">
                   <label htmlFor="personas">Personas</label>
-                  <input id="personas" name="personas" type="number" min={1} placeholder="Ej. 2" />
+                  <input
+                    id="personas"
+                    name="personas"
+                    type="number"
+                    min={1}
+                    placeholder="Ej. 2"
+                  />
                 </div>
               </div>
 
               <div className="form-row">
                 <div className="form-group">
                   <label htmlFor="fecha">Fecha</label>
-                  <input id="fecha" name="fecha" type="date" />
+                  <input
+                    id="fecha"
+                    name="fecha"
+                    type="date"
+                  />
                 </div>
                 <div className="form-group">
                   <label htmlFor="hora">Hora</label>
-                  <input id="hora" name="hora" type="time" />
+                  <input
+                    id="hora"
+                    name="hora"
+                    type="time"
+                  />
                 </div>
               </div>
 
@@ -157,15 +270,17 @@ export default function Reserva() {
 
               <div className="form-group full-width">
                 <label htmlFor="mensaje">Comentarios adicionales</label>
-                <textarea id="mensaje" name="mensaje" placeholder="Notas especiales o alergias..." />
+                <textarea
+                  id="mensaje"
+                  name="mensaje"
+                  placeholder="Notas especiales o alergias..."
+                />
               </div>
 
-              <button type="submit" className="confirm-btn">Confirmar Reserva</button>
+              <button type="submit" className="confirm-btn" disabled={loading}>
+                {loading ? 'Guardando...' : 'Confirmar Reserva'}
+              </button>
             </form>
-
-            <div className="register-link" style={{ marginTop: 25 }}>
-              ¿Quieres modificar tus datos? <Link to="/login">Inicia sesión</Link>
-            </div>
           </div>
         </div>
       </div>

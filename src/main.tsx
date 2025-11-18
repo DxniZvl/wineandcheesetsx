@@ -29,6 +29,7 @@ createRoot(document.getElementById("root")!).render(
         <Route path="/admin" element={<Admin />} />
         <Route path="/test" element={<TestSupabase />} />
         <Route path="/mis-reservas" element={<MisReservas />} />
+        
 
         {/* Si quieres 404 luego: <Route path="*" element={<NotFound />} /> */}
       </Routes>
