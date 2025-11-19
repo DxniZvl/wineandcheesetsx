@@ -239,7 +239,7 @@ const WineAndCheeseHome: React.FC = () => {
               <h3>Contáctanos</h3>
 
               <div className="contacto-item">
-                <span className="contacto-icon">📍</span>
+                <span className="contacto-icon"></span>
                 <div className="contacto-info">
                   <strong>Ubicación</strong>
                   <p>Alajuela, La Ceiba, Costa Rica</p>
@@ -247,7 +247,7 @@ const WineAndCheeseHome: React.FC = () => {
               </div>
 
               <div className="contacto-item">
-                <span className="contacto-icon">📞</span>
+                <span className="contacto-icon"></span>
                 <div className="contacto-info">
                   <strong>Teléfono</strong>
                   <p>+506 64306861</p>
@@ -255,7 +255,7 @@ const WineAndCheeseHome: React.FC = () => {
               </div>
 
               <div className="contacto-item">
-                <span className="contacto-icon">✉️</span>
+                <span className="contacto-icon"></span>
                 <div className="contacto-info">
                   <strong>Email</strong>
                   <p>info@wineandcheese.cr</p>
