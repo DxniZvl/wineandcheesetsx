@@ -34,7 +34,7 @@ export default function MisReservas() {
       setError(null)
 
       const { data, error } = await supabase
-        .from<ReservaRow>('reservas')
+        .from('reservas')
         .select('*')
         .eq('usuario_id', user.id)
         .order('fecha_reserva', { ascending: true })
