@@ -164,7 +164,7 @@ const WineAndCheeseHome: React.FC = () => {
 
           <div className="botones-extra">
             <a href="/cata-de-vinos" className="vino-button">
-              Ver Catálogo
+              Ver Cata
             </a>
             <a href="/menu" className="vino-button">
               Menú
