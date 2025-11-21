@@ -14,6 +14,7 @@ import Reserva from "./pages/Reserva";
 import Admin from "./pages/Admin";
 import TestSupabase from "./pages/TestSupabase";
 import MisReservas from "./pages/MisReservas";
+import CatalogoVinos from "./pages/CatalogoVinos";  // ← AGREGAR ESTA LÍNEA
 
 
 createRoot(document.getElementById("root")!).render(
@@ -29,6 +30,7 @@ createRoot(document.getElementById("root")!).render(
         <Route path="/admin" element={<Admin />} />
         <Route path="/test" element={<TestSupabase />} />
         <Route path="/mis-reservas" element={<MisReservas />} />
+        <Route path="/catalogo-vinos" element={<CatalogoVinos />} />  {/* ← AGREGAR ESTA LÍNEA */}
         
 
         {/* Si quieres 404 luego: <Route path="*" element={<NotFound />} /> */}
