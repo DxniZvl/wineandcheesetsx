@@ -3,6 +3,7 @@
  * @param fechaCumpleanos - Fecha de cumpleaños en formato string o Date
  * @returns true si hoy es el cumpleaños, false en caso contrario
  */
+
 export function isBirthday(fechaCumpleanos: string | Date | null | undefined): boolean {
     if (!fechaCumpleanos) return false;
 
