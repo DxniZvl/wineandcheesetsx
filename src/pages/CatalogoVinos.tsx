@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Wine, MapPin, Filter, X, Search } from 'lucide-react';
 import Navbar from '../components/Navbar';
+import ChatBot from '../components/ChatBot';
 
 const CatalogoVinos = () => {
   const [filtroTipo, setFiltroTipo] = useState('Todos');
@@ -20,7 +21,7 @@ const CatalogoVinos = () => {
     { nombre: 'Brunello di Montalcino', tipo: 'Tinto', pais: 'Italia', region: 'Toscana', precio: 320, descripcion: 'Sangiovese en su máxima expresión' },
     { nombre: 'Pingus', tipo: 'Tinto', pais: 'España', region: 'Ribera del Duero', precio: 750, descripcion: 'Vino de culto, producción limitada' },
     { nombre: 'Screaming Eagle Cabernet', tipo: 'Tinto', pais: 'Estados Unidos', region: 'Napa Valley', precio: 3500, descripcion: 'Ultra premium, uno de los más exclusivos' },
-    
+
     // Blancos
     { nombre: 'Chablis Grand Cru', tipo: 'Blanco', pais: 'Francia', region: 'Borgoña', precio: 280, descripcion: 'Mineral y fresco, Chardonnay en su forma más pura' },
     { nombre: 'Cloudy Bay Sauvignon Blanc', tipo: 'Blanco', pais: 'Nueva Zelanda', region: 'Marlborough', precio: 150, descripcion: 'Aromático y vibrante, notas cítricas' },
@@ -30,7 +31,7 @@ const CatalogoVinos = () => {
     { nombre: 'Riesling Dr. Loosen', tipo: 'Blanco', pais: 'Alemania', region: 'Mosel', precio: 140, descripcion: 'Dulzura equilibrada con acidez refrescante' },
     { nombre: 'Chassagne-Montrachet', tipo: 'Blanco', pais: 'Francia', region: 'Borgoña', precio: 350, descripcion: 'Gran Chardonnay, complejo y longevo' },
     { nombre: 'Verdejo Rueda', tipo: 'Blanco', pais: 'España', region: 'Rueda', precio: 55, descripcion: 'Herbáceo y fresco, notas de frutas blancas' },
-    
+
     // Espumosos
     { nombre: 'Moët & Chandon', tipo: 'Espumoso', pais: 'Francia', region: 'Champagne', precio: 180, descripcion: 'Champagne icónico, elegante y festivo' },
     { nombre: 'Prosecco Valdobbiadene', tipo: 'Espumoso', pais: 'Italia', region: 'Véneto', precio: 75, descripcion: 'Ligero y afrutado, perfecto para aperitivos' },
@@ -38,17 +39,17 @@ const CatalogoVinos = () => {
     { nombre: 'Veuve Clicquot', tipo: 'Espumoso', pais: 'Francia', region: 'Champagne', precio: 220, descripcion: 'Champagne de gran prestigio y elegancia' },
     { nombre: 'Chandon Brut', tipo: 'Espumoso', pais: 'Argentina', region: 'Mendoza', precio: 85, descripcion: 'Espumoso argentino de alta calidad' },
     { nombre: 'Franciacorta Ca del Bosco', tipo: 'Espumoso', pais: 'Italia', region: 'Lombardía', precio: 190, descripcion: 'Método clásico italiano, refinado' },
-    
+
     // Rosados
     { nombre: 'Whispering Angel', tipo: 'Rosado', pais: 'Francia', region: 'Provenza', precio: 110, descripcion: 'Rosado de culto, elegante y refrescante' },
     { nombre: 'Mateus Rosé', tipo: 'Rosado', pais: 'Portugal', region: 'Portugal', precio: 45, descripcion: 'Clásico portugués, ligero y afrutado' },
     { nombre: 'Marqués de Cáceres Rosado', tipo: 'Rosado', pais: 'España', region: 'Rioja', precio: 55, descripcion: 'Fresco y versátil, excelente para el verano' },
-    
+
     // Dulces/Fortificados
     { nombre: 'Sauternes Château d\'Yquem', tipo: 'Dulce', pais: 'Francia', region: 'Burdeos', precio: 550, descripcion: 'El mejor vino dulce del mundo' },
     { nombre: 'Oporto Taylor\'s', tipo: 'Fortificado', pais: 'Portugal', region: 'Valle del Duero', precio: 180, descripcion: 'Porto vintage, complejo y longevo' },
     { nombre: 'Pedro Ximénez González Byass', tipo: 'Dulce Fortificado', pais: 'España', region: 'Jerez', precio: 120, descripcion: 'Intensamente dulce, perfecto para postres' },
-    
+
     // Costa Rica
     { nombre: 'Viñedos Altamira Tinto', tipo: 'Tinto', pais: 'Costa Rica', region: 'Coto Brus', precio: 85, descripcion: 'Orgullo local, producción artesanal' },
     { nombre: 'Viñedos Altamira Blanco', tipo: 'Blanco', pais: 'Costa Rica', region: 'Coto Brus', precio: 80, descripcion: 'Vino blanco costarricense único' },
@@ -62,7 +63,7 @@ const CatalogoVinos = () => {
     const cumpleTipo = filtroTipo === 'Todos' || vino.tipo === filtroTipo;
     const cumplePais = filtroPais === 'Todos' || vino.pais === filtroPais;
     const cumpleBusqueda = vino.nombre.toLowerCase().includes(busqueda.toLowerCase()) ||
-                          vino.region.toLowerCase().includes(busqueda.toLowerCase());
+      vino.region.toLowerCase().includes(busqueda.toLowerCase());
     return cumpleTipo && cumplePais && cumpleBusqueda;
   });
 
@@ -275,14 +276,14 @@ const CatalogoVinos = () => {
               cursor: 'pointer',
               border: '1px solid #f0f0f0'
             }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.transform = 'translateY(-5px)';
-              e.currentTarget.style.boxShadow = '0 12px 30px rgba(0, 0, 0, 0.15)';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.transform = 'translateY(0)';
-              e.currentTarget.style.boxShadow = '0 8px 20px rgba(0, 0, 0, 0.08)';
-            }}>
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = 'translateY(-5px)';
+                e.currentTarget.style.boxShadow = '0 12px 30px rgba(0, 0, 0, 0.15)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'translateY(0)';
+                e.currentTarget.style.boxShadow = '0 8px 20px rgba(0, 0, 0, 0.08)';
+              }}>
               {/* Encabezado con tipo */}
               <div style={{
                 display: 'flex',
@@ -382,6 +383,9 @@ const CatalogoVinos = () => {
           </div>
         )}
       </div>
+
+      {/* ChatBot flotante */}
+      <ChatBot />
     </div>
   );
 };

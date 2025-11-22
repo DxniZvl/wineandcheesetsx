@@ -7,16 +7,38 @@ interface Message {
 }
 
 const ChatBot: React.FC = () => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [messages, setMessages] = useState<Message[]>([
-    {
-      role: 'assistant',
-      content: '¡Hola! Soy tu asistente de Wine and Cheese. ¿En qué puedo ayudarte hoy? Puedo responder preguntas sobre nuestros vinos, quesos, reservas, eventos y más.'
+  // Cargar estado inicial desde localStorage
+  const [isOpen, setIsOpen] = useState(() => {
+    const saved = localStorage.getItem('chatbot_isOpen');
+    return saved ? JSON.parse(saved) : false;
+  });
+
+  const [messages, setMessages] = useState<Message[]>(() => {
+    const saved = localStorage.getItem('chatbot_messages');
+    if (saved) {
+      return JSON.parse(saved);
     }
-  ]);
+    return [
+      {
+        role: 'assistant',
+        content: '¡Hola! Soy tu asistente de Wine and Cheese. ¿En qué puedo ayudarte hoy? Puedo responder preguntas sobre nuestros vinos, quesos, reservas, eventos y más.'
+      }
+    ];
+  });
+
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  // Guardar mensajes en localStorage cuando cambien
+  useEffect(() => {
+    localStorage.setItem('chatbot_messages', JSON.stringify(messages));
+  }, [messages]);
+
+  // Guardar estado de isOpen en localStorage cuando cambie
+  useEffect(() => {
+    localStorage.setItem('chatbot_isOpen', JSON.stringify(isOpen));
+  }, [isOpen]);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -51,7 +73,7 @@ const ChatBot: React.FC = () => {
       }
 
       const data = await response.json();
-      
+
       if (data.response) {
         const assistantMessage: Message = {
           role: 'assistant',
@@ -211,7 +233,7 @@ const ChatBot: React.FC = () => {
                   maxWidth: '80%',
                   padding: '12px 16px',
                   borderRadius: '16px',
-                  background: msg.role === 'user' 
+                  background: msg.role === 'user'
                     ? 'linear-gradient(135deg, #5a0015 0%, #8b0505 100%)'
                     : 'white',
                   color: msg.role === 'user' ? 'white' : '#333',
@@ -224,7 +246,7 @@ const ChatBot: React.FC = () => {
                 </div>
               </div>
             ))}
-            
+
             {isLoading && (
               <div style={{
                 display: 'flex',
@@ -289,7 +311,7 @@ const ChatBot: React.FC = () => {
                 width: '44px',
                 height: '44px',
                 borderRadius: '50%',
-                background: input.trim() && !isLoading 
+                background: input.trim() && !isLoading
                   ? 'linear-gradient(135deg, #5a0015 0%, #8b0505 100%)'
                   : '#e0e0e0',
                 color: 'white',

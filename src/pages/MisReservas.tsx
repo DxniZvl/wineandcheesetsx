@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import '../style.css'
 import { supabase } from '../supabaseClient'
 import { getCurrentUser } from '../auth'
+import ChatBot from '../components/ChatBot'
 
 type TipoReserva = 'cata' | 'quesos' | 'cena' | 'privado'
 
@@ -211,6 +212,9 @@ export default function MisReservas() {
           ← Volver al inicio
         </Link>
       </div>
+
+      {/* ChatBot flotante */}
+      <ChatBot />
     </div>
   )
 }

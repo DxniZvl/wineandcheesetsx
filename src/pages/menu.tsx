@@ -1,6 +1,7 @@
 // src/pages/Menu.tsx
 import React, { useEffect, useRef, useState } from "react";
 import Navbar from "../components/Navbar";
+import ChatBot from "../components/ChatBot";
 
 
 const slidesSrc = [
@@ -355,6 +356,9 @@ const Menu: React.FC = () => {
           </section>
         </div>
       </div>
+
+      {/* ChatBot flotante */}
+      <ChatBot />
     </>
   );
 };

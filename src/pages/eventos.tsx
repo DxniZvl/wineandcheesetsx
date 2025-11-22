@@ -3,6 +3,7 @@ import Navbar from "../components/Navbar";
 import "../style.css";
 import { getCurrentUser } from "../auth";
 import { useNavigate } from "react-router-dom";
+import ChatBot from "../components/ChatBot";
 
 
 export default function Eventos() {
@@ -72,9 +73,9 @@ export default function Eventos() {
       {/* SECCIÓN DE EVENTOS */}
       <section style={{ background: "#fff", padding: "80px 20px" }}>
         <div className="menu-content" style={{ maxWidth: 1000 }}>
-            <h2 className="section-title" style={{ color: "#2c1810", textAlign: "center" }}>
+          <h2 className="section-title" style={{ color: "#2c1810", textAlign: "center" }}>
             Nuestros Eventos
-            </h2>
+          </h2>
           <EventosSlider />
         </div>
       </section>
@@ -108,7 +109,7 @@ export default function Eventos() {
             margin: "0 auto",
           }}
         >
-            <h2
+          <h2
             style={{
               fontFamily: '"Playfair Display", serif',
               fontSize: "2.8rem",
@@ -117,9 +118,9 @@ export default function Eventos() {
               textShadow: "2px 2px 4px rgba(0,0,0,.8)",
               margin: "0 0 16px",
             }}
-            >
+          >
             ¿Listo para una experiencia única?
-            </h2>
+          </h2>
           <p
             style={{
               color: "#f4e4c1",
@@ -157,12 +158,12 @@ export default function Eventos() {
       {/* SECCIÓN JUEGOS */}
       <section id="juegos" style={{ background: "#f8f8f8", padding: "60px 20px" }}>
         <div className="menu-content" style={{ maxWidth: 1000 }}>
-            <h2
+          <h2
             className="section-title"
             style={{ color: "#2c1810", textAlign: "center" }}
-            >
+          >
             Juegos de Mesa
-            </h2>
+          </h2>
           <p
             style={{
               textAlign: "center",
@@ -229,6 +230,9 @@ export default function Eventos() {
           </div>
         </div>
       </section>
+
+      {/* ChatBot flotante */}
+      <ChatBot />
     </div>
   );
 }

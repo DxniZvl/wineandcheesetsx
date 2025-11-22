@@ -1,8 +1,9 @@
-import { FormEvent, useState } from 'react'
+import { FormEvent, useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import '../style.css'
 import { supabase } from '../supabaseClient'
 import { getCurrentUser } from '../auth'
+import { isBirthday, BIRTHDAY_DISCOUNT_PERCENT } from '../utils/birthday'
 
 type DatosReserva = {
   nombre: string
@@ -17,7 +18,7 @@ function validarReserva({ nombre, personas, fecha, hora, tipo }: DatosReserva): 
   if (!nombre || !fecha || !hora || !tipo || !personas) {
     return 'Por favor completa todos los campos.'
   }
-  
+
   if (personas <= 0) {
     return 'La cantidad de personas debe ser al menos 1.'
   }
@@ -36,6 +37,31 @@ export default function Reserva() {
   const [error, setError] = useState<string | null>(null)
   const [ok, setOk] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
+  const [isBirthdayToday, setIsBirthdayToday] = useState(false)
+  const [userName, setUserName] = useState('')
+
+  // 🎂 Verificar si es el cumpleaños del usuario
+  useEffect(() => {
+    const checkBirthday = async () => {
+      const user = getCurrentUser()
+      if (!user) return
+
+      const { data, error } = await supabase
+        .from('usuarios')
+        .select('fecha_cumpleanos, nombre')
+        .eq('id', user.id)
+        .single()
+
+      if (data && !error) {
+        setUserName(data.nombre)
+        if (data.fecha_cumpleanos && isBirthday(data.fecha_cumpleanos)) {
+          setIsBirthdayToday(true)
+        }
+      }
+    }
+
+    checkBirthday()
+  }, [])
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -77,6 +103,7 @@ export default function Reserva() {
           numero_comensales: personas,
           tipo_reserva: tipo,
           detalles_adicionales: detalles || null,
+          descuento_aplicado: isBirthdayToday ? BIRTHDAY_DISCOUNT_PERCENT : 0, // 🎂 Guardar descuento
           // estado lo pone la BD como 'pendiente'
         },
       ])
@@ -92,7 +119,7 @@ export default function Reserva() {
     e.currentTarget.reset()
     setLoading(false)
 
-    
+
 
   }
 
@@ -139,6 +166,35 @@ export default function Reserva() {
           </div>
 
           <div className="modal-body">
+            {/* 🎂 Banner de cumpleaños */}
+            {isBirthdayToday && (
+              <div style={{
+                background: 'linear-gradient(135deg, #d4af37 0%, #f4e4c1 100%)',
+                border: '2px solid #d4af37',
+                borderRadius: '12px',
+                padding: '20px',
+                marginBottom: '24px',
+                textAlign: 'center',
+                boxShadow: '0 4px 12px rgba(212, 175, 55, 0.3)'
+              }}>
+                <div style={{
+                  fontSize: '2.5rem',
+                  marginBottom: '8px'
+                }}>🎉🎂✨</div>
+                <h3 style={{
+                  color: '#5a0015',
+                  margin: '0 0 8px 0',
+                  fontSize: '1.5rem',
+                  fontWeight: 'bold'
+                }}>¡Feliz Cumpleaños{userName ? `, ${userName}` : ''}!</h3>
+                <p style={{
+                  color: '#2c1810',
+                  margin: 0,
+                  fontSize: '1.1rem',
+                  fontWeight: 600
+                }}>🎁 Tienes un <strong>{BIRTHDAY_DISCOUNT_PERCENT}% de descuento</strong> en tu reserva de hoy</p>
+              </div>
+            )}
             {error && (
               <div className="wine-alert" role="alert" aria-live="assertive">
                 <div className="icon">!</div>
