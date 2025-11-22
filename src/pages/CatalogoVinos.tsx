@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Wine, MapPin, Filter, X, Search } from 'lucide-react';
+import Navbar from '../components/Navbar';
 
 const CatalogoVinos = () => {
-  const [isScrolled, setIsScrolled] = useState(false);
   const [filtroTipo, setFiltroTipo] = useState('Todos');
   const [filtroPais, setFiltroPais] = useState('Todos');
   const [busqueda, setBusqueda] = useState('');
@@ -58,14 +58,6 @@ const CatalogoVinos = () => {
   const tipos = ['Todos', 'Tinto', 'Blanco', 'Espumoso', 'Rosado', 'Dulce', 'Dulce Fortificado', 'Fortificado'];
   const paises = ['Todos', ...new Set(vinos.map(v => v.pais))].sort();
 
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
   const vinosFiltrados = vinos.filter(vino => {
     const cumpleTipo = filtroTipo === 'Todos' || vino.tipo === filtroTipo;
     const cumplePais = filtroPais === 'Todos' || vino.pais === filtroPais;
@@ -76,44 +68,8 @@ const CatalogoVinos = () => {
 
   return (
     <div style={{ minHeight: '100vh', background: '#f8f6f3' }}>
-      {/* NAVBAR */}
-      <header className={`navbar ${isScrolled ? 'scrolled' : ''}`} style={{
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        background: isScrolled ? 'rgba(0, 0, 0, 0.8)' : 'rgba(0, 0, 0, 0.3)',
-        backdropFilter: 'blur(10px)',
-        padding: '15px 30px',
-        color: 'white',
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        right: 0,
-        zIndex: 1000,
-        transition: 'all 0.3s ease',
-        minHeight: '70px',
-        boxSizing: 'border-box'
-      }}>
-        <div style={{ display: 'flex', alignItems: 'center', flexShrink: 0 }}>
-          <img src="Imagenes Wine/Logo.png" alt="Logo" style={{ width: '60px', height: '60px', marginRight: '12px' }} />
-          <h1 style={{ 
-            fontSize: '22px', 
-            margin: 0, 
-            fontFamily: '"Playfair Display", serif',
-            color: 'white',
-            textShadow: '2px 2px 4px rgba(0, 0, 0, 0.7)'
-          }}>
-            Wine and Cheese
-          </h1>
-        </div>
-        
-        <nav style={{ display: 'flex', gap: '30px', alignItems: 'center' }}>
-          <a href="/" style={{ color: 'white', textDecoration: 'none', fontWeight: 600 }}>Inicio</a>
-          <a href="/menu" style={{ color: 'white', textDecoration: 'none', fontWeight: 600 }}>Menú</a>
-          <a href="/eventos" style={{ color: 'white', textDecoration: 'none', fontWeight: 600 }}>Eventos</a>
-          <a href="/#contactos" style={{ color: 'white', textDecoration: 'none', fontWeight: 600 }}>Contacto</a>
-        </nav>
-      </header>
+      {/* NAVBAR COMPONENTE */}
+      <Navbar />
 
       {/* HERO */}
       <div style={{

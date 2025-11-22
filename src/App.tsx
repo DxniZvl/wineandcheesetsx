@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './style.css';
 import { useNavigate } from 'react-router-dom';
 import { getCurrentUser, clearCurrentUser } from './auth';
-import ChatBot from './ChatBot';
+import ChatBot from './components/ChatBot';
 
 interface User {
   id: string;
@@ -163,7 +163,7 @@ const WineAndCheeseHome: React.FC = () => {
           <h2>Wine and Cheese</h2>
 
           <div className="botones-extra">
-            <a href="/cata-de-vinos" className="vino-button">
+            <a href="/catalogo-vinos" className="vino-button">
               Ver Cata
             </a>
             <a href="/menu" className="vino-button">

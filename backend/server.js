@@ -1,0 +1,44 @@
+const express = require('express');
+const cors = require('cors');
+require('dotenv').config();
+const { GoogleGenerativeAI } = require('@google/generative-ai');
+
+const app = express();
+app.use(cors());
+app.use(express.json());
+
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+
+app.post('/api/chat', async (req, res) => {
+  try {
+    const { message } = req.body;
+    
+    const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
+    
+    const systemPrompt = `Eres un asistente virtual experto de Wine and Cheese, un restaurante elegante especializado en vinos y quesos en Alajuela, Costa Rica.
+
+INFORMACIÓN DEL RESTAURANTE:
+- Ubicación: Alajuela, La Ceiba, Costa Rica
+- Teléfono: +506 64306861
+- Email: info@wineandcheese.cr
+- Horario: Martes a Domingo 12:00 PM - 10:00 PM (Lunes cerrado)
+
+Responde en español, sé amable y conciso (2-4 líneas máximo).
+
+Usuario: ${message}`;
+
+    const result = await model.generateContent(systemPrompt);
+    const response = result.response;
+    const text = response.text();
+    
+    res.json({ response: text });
+  } catch (error) {
+    console.error('Error:', error);
+    res.status(500).json({ error: 'Error al procesar el mensaje' });
+  }
+});
+
+const PORT = process.env.PORT || 3001;
+app.listen(PORT, () => {
+  console.log(`Servidor corriendo en http://localhost:${PORT}`);
+});
