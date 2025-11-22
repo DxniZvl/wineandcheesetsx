@@ -11,7 +11,7 @@ const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
 // Ruta de prueba
 app.get('/', (req, res) => {
-  res.json({ 
+  res.json({
     status: '✅ Backend funcionando correctamente',
     endpoints: {
       chat: 'POST /api/chat'
@@ -22,10 +22,10 @@ app.get('/', (req, res) => {
 app.post('/api/chat', async (req, res) => {
   try {
     const { message } = req.body;
-    
-    // ⚠️ Cambiado a 'gemini-pro'
-    const model = genAI.getGenerativeModel({ model: 'gemini-pro' });
-    
+
+    // Usando gemini-1.5-pro (compatible con nuevas API keys)
+    const model = genAI.getGenerativeModel({ model: 'gemini-1.5-pro' });
+
     const systemPrompt = `Eres un asistente virtual experto de Wine and Cheese, un restaurante elegante especializado en vinos y quesos en Alajuela, Costa Rica.
 
 INFORMACIÓN DEL RESTAURANTE:
@@ -49,11 +49,11 @@ Usuario: ${message}`;
     const result = await model.generateContent(systemPrompt);
     const response = result.response;
     const text = response.text();
-    
+
     res.json({ response: text });
   } catch (error) {
     console.error('Error:', error);
-    res.status(500).json({ error: 'Error al procesar el mensaje' });
+    res.status(500).json({ error: 'Error al procesar el mensaje', details: error.message });
   }
 });
 
