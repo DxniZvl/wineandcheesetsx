@@ -9,11 +9,22 @@ app.use(express.json());
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
+// Ruta de prueba
+app.get('/', (req, res) => {
+  res.json({ 
+    status: '✅ Backend funcionando correctamente',
+    endpoints: {
+      chat: 'POST /api/chat'
+    }
+  });
+});
+
 app.post('/api/chat', async (req, res) => {
   try {
     const { message } = req.body;
     
-    const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
+    // ⚠️ Cambiado a 'gemini-pro'
+    const model = genAI.getGenerativeModel({ model: 'gemini-pro' });
     
     const systemPrompt = `Eres un asistente virtual experto de Wine and Cheese, un restaurante elegante especializado en vinos y quesos en Alajuela, Costa Rica.
 
@@ -22,8 +33,16 @@ INFORMACIÓN DEL RESTAURANTE:
 - Teléfono: +506 64306861
 - Email: info@wineandcheese.cr
 - Horario: Martes a Domingo 12:00 PM - 10:00 PM (Lunes cerrado)
+- Especialidad: Maridaje de vinos y quesos premium
+- Servicios: Catas de vino, eventos privados, menú gourmet
 
-Responde en español, sé amable y conciso (2-4 líneas máximo).
+VINOS DESTACADOS:
+- Tintos: Château Margaux ($450), Opus One ($420), Vega Sicilia Único ($500)
+- Blancos: Chablis Grand Cru ($280), Cloudy Bay Sauvignon Blanc ($150)
+- Espumosos: Moët & Chandon ($180), Veuve Clicquot ($220)
+- Vinos Costarricenses: Viñedos Altamira ($75-85)
+
+Responde en español, sé amable, profesional y conciso (2-4 líneas máximo).
 
 Usuario: ${message}`;
 
@@ -40,5 +59,5 @@ Usuario: ${message}`;
 
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
-  console.log(`Servidor corriendo en http://localhost:${PORT}`);
+  console.log(`✅ Servidor corriendo en http://localhost:${PORT}`);
 });
