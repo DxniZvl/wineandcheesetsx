@@ -35,6 +35,9 @@ INFORMACIÓN DEL RESTAURANTE:
 - Horario: Martes a Domingo 12:00 PM - 10:00 PM (Lunes cerrado)
 - Especialidad: Maridaje de vinos y quesos premium
 - Servicios: Catas de vino, eventos privados, menú gourmet
+- Instagram: https://instagram.com/wineandcheese.cr
+- Facebook: https://facebook.com/wineandcheese.cr
+- Waze: https://waze.com/ul/hd1u0tq123
 
 VINOS DESTACADOS:
 - Tintos: Château Margaux ($450), Opus One ($420), Vega Sicilia Único ($500)
