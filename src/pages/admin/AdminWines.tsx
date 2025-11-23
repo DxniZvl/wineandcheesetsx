@@ -10,7 +10,7 @@ import {
     updateStock,
     Wine
 } from '../../services/wineService'
-import { Wine as WineIcon, Plus, Edit, Trash2, Search, AlertTriangle } from 'lucide-react'
+import { Wine as WineIcon, Plus, Edit, Trash2, Search, AlertTriangle, Power } from 'lucide-react'
 
 const COLORS = {
     primary: '#5a0015',
@@ -170,17 +170,17 @@ export default function AdminWines() {
     const handleDelete = async (wine: Wine) => {
         if (!wine.id) return
 
-        if (!confirm(`¿Estás seguro de desactivar "${wine.nombre}"?`)) {
+        if (!confirm(`¿Estás seguro de ELIMINAR permanentemente "${wine.nombre}"? Esta acción no se puede deshacer.`)) {
             return
         }
 
         try {
             await deleteWine(wine.id)
-            alert('Vino desactivado exitosamente')
+            alert('Vino eliminado exitosamente')
             loadWines()
         } catch (error) {
             console.error('Error deleting wine:', error)
-            alert('Error al desactivar el vino')
+            alert('Error al eliminar el vino')
         }
     }
 
@@ -198,6 +198,26 @@ export default function AdminWines() {
         } catch (error) {
             console.error('Error updating stock:', error)
             alert('Error al actualizar el stock')
+        }
+    }
+
+    const handleToggleStatus = async (wine: Wine) => {
+        if (!wine.id) return
+
+        const newStatus = !wine.activo
+        const action = newStatus ? 'activar' : 'desactivar'
+
+        if (!confirm(`¿Estás seguro de ${action} "${wine.nombre}"?`)) {
+            return
+        }
+
+        try {
+            await updateWine(wine.id, { ...wine, activo: newStatus })
+            alert(`Vino ${newStatus ? 'activado' : 'desactivado'} exitosamente`)
+            loadWines()
+        } catch (error) {
+            console.error('Error updating wine status:', error)
+            alert(`Error al ${action} el vino`)
         }
     }
 
@@ -425,6 +445,17 @@ export default function AdminWines() {
                                                     title="Desactivar"
                                                 >
                                                     <Trash2 size={16} />
+                                                </button>
+                                                <button
+                                                    onClick={() => handleToggleStatus(wine)}
+                                                    style={{
+                                                        ...actionButtonStyle,
+                                                        color: wine.activo ? '#ef4444' : '#10b981',
+                                                        background: wine.activo ? 'rgba(239, 68, 68, 0.1)' : 'rgba(16, 185, 129, 0.1)'
+                                                    }}
+                                                    title={wine.activo ? "Desactivar" : "Activar"}
+                                                >
+                                                    <Power size={16} />
                                                 </button>
                                             </div>
                                         </td>
