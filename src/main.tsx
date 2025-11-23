@@ -8,13 +8,13 @@ import "./style.css";
 import Home from "./App";              // alias para claridad: Home = App
 import Menu from "./pages/MenuPage";
 import Eventos from "./pages/EventosPage";
-import Login from "./pages/Login";
-import Registro from "./pages/Registro";
-import Reserva from "./pages/Reserva";
-import TestSupabase from "./pages/TestSupabase";
-import MisReservas from "./pages/MisReservas";
-import CatalogoVinos from "./pages/CatalogoVinos";
-import Carrito from "./pages/Carrito";
+import Login from "./pages/LoginPage";
+import Registro from "./pages/RegistroPage";
+import Reserva from "./pages/ReservaPage";
+import TestSupabase from "./pages/TestSupabasePage";
+import MisReservas from "./pages/MisReservasPage";
+import CatalogoVinos from "./pages/CatalogoVinosPage";
+import Carrito from "./pages/CarritoPage";
 
 // Componentes de administración
 import RequireAdmin from "./components/RequireAdmin";
