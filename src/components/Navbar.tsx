@@ -2,7 +2,7 @@
 import React, { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
-import { getCurrentUser, clearCurrentUser, isAdmin } from "../auth"; 
+import { getCurrentUser, clearCurrentUser, isAdmin } from "../auth";
 // 👆 This replaces the fake useAuth()
 
 const Navbar: React.FC = () => {
@@ -41,6 +41,15 @@ const Navbar: React.FC = () => {
           <Link to="/eventos">Eventos</Link>
           <a href="/eventos#juegos">Juegos</a>
           <a href="/#contactos">Contacto</a>
+          {user && isAdmin(user) && (
+            <Link to="/admin" style={{
+              color: '#d4af37',
+              fontWeight: 'bold',
+              borderBottom: '2px solid #d4af37'
+            }}>
+              🛠️ Admin
+            </Link>
+          )}
         </nav>
 
         {/* ------- RIGHT SIDE (User actions) ------- */}
@@ -59,12 +68,12 @@ const Navbar: React.FC = () => {
 
             {/* Logout */}
             <button
-                className="logout-btn"
-                type="button"
-                onClick={handleLogout}
-              >
-                Cerrar Sesion
-              </button>
+              className="logout-btn"
+              type="button"
+              onClick={handleLogout}
+            >
+              Cerrar Sesion
+            </button>
           </div>
         ) : (
           // If no logged user

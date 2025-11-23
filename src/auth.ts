@@ -4,6 +4,8 @@ export type WineUser = {
   nombre: string
   apellido: string
   email: string
+  role?: 'admin' | 'user'
+  canEdit?: boolean
 }
 
 const STORAGE_KEY = 'wine_user'
@@ -27,6 +29,19 @@ export function clearCurrentUser() {
   localStorage.removeItem(STORAGE_KEY)
 }
 
-export function isAdmin(user: WineUser | null) {
-  return !!user && user.email === 'admin@wine.com'
+/**
+ * Verifica si el usuario tiene rol de administrador
+ */
+export function isAdmin(user: WineUser | null): boolean {
+  return !!user && user.role === 'admin'
+}
+
+/**
+ * Verifica si el usuario tiene permisos de edición
+ * Los admins siempre tienen permiso de edición
+ */
+export function canEdit(user: WineUser | null): boolean {
+  if (!user) return false
+  if (user.role === 'admin') return true
+  return !!user.canEdit
 }

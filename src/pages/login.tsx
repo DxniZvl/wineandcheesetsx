@@ -21,58 +21,67 @@ export default function Login() {
   }
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-  e.preventDefault()
-  clearMarks()
-  setError(null)
+    e.preventDefault()
+    clearMarks()
+    setError(null)
 
-  const data = Object.fromEntries(new FormData(e.currentTarget).entries())
+    const data = Object.fromEntries(new FormData(e.currentTarget).entries())
 
-  const email = String(data.login_email || '').trim()
-  const pass = String(data.login_password || '')
+    const email = String(data.login_email || '').trim()
+    const pass = String(data.login_password || '')
 
-  if (!email || !pass) {
-    setError('Por favor completa todos los campos.')
-    markError([!email ? 'email' : '', !pass ? 'password' : ''].filter(Boolean))
-    return
+    if (!email || !pass) {
+      setError('Por favor completa todos los campos.')
+      markError([!email ? 'email' : '', !pass ? 'password' : ''].filter(Boolean))
+      return
+    }
+
+    // 🔍 Buscar usuario por email en Supabase con role y can_edit
+    const { data: user, error: queryError } = await supabase
+      .from('usuarios')
+      .select('id, nombre, apellido, email, password, role, can_edit')
+      .eq('email', email)
+      .single()
+
+    if (queryError || !user) {
+      setError('Correo o contraseña incorrectos.')
+      markError(['email', 'password'])
+      return
+    }
+
+    // 🔐 Comparar contraseña
+    if (user.password !== pass) {
+      setError('Correo o contraseña incorrectos.')
+      markError(['email', 'password'])
+      return
+    }
+
+    // ⭐ Guardar datos del usuario logueado incluyendo role y can_edit
+    setCurrentUser({
+      id: user.id,
+      nombre: user.nombre,
+      apellido: user.apellido,
+      email: user.email,
+      role: user.role || 'user',
+      canEdit: user.can_edit || false
+    })
+
+    // 🔁 Redirigir según el rol
+    const currentUser = {
+      id: user.id,
+      nombre: user.nombre,
+      apellido: user.apellido,
+      email: user.email,
+      role: user.role || 'user',
+      canEdit: user.can_edit || false
+    }
+
+    if (isAdmin(currentUser)) {
+      navigate('/admin')
+    } else {
+      navigate('/')
+    }
   }
-
-  // 🔍 Buscar usuario por email en Supabase
-  const { data: user, error: queryError } = await supabase
-    .from('usuarios')
-    .select('*')
-    .eq('email', email)
-    .single()
-
-  if (queryError || !user) {
-    setError('Correo o contraseña incorrectos.')
-    markError(['email', 'password'])
-    return
-  }
-
-  // 🔐 Comparar contraseña
-  if (user.password !== pass) {
-    setError('Correo o contraseña incorrectos.')
-    markError(['email', 'password'])
-    return
-  }
-
-  // ⭐ Guardar datos del usuario logueado
-  setCurrentUser({
-    id: user.id,
-    nombre: user.nombre,
-    apellido: user.apellido,
-    email: user.email,
-  })
-
-  // 🔁 Redirigir
-  // Aquí decides:
-  // Ejemplo: si el correo es admin, va al panel
-  if (isAdmin(user)) {
-    navigate('/admin')
-  } else {
-    navigate('/')
-  }
-}
 
   return (
     <div

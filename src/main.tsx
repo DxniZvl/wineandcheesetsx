@@ -11,10 +11,15 @@ import Eventos from "./pages/Eventos";
 import Login from "./pages/Login";
 import Registro from "./pages/Registro";
 import Reserva from "./pages/Reserva";
-import Admin from "./pages/Admin";
 import TestSupabase from "./pages/TestSupabase";
 import MisReservas from "./pages/MisReservas";
-import CatalogoVinos from "./pages/CatalogoVinos";  // ← AGREGAR ESTA LÍNEA
+import CatalogoVinos from "./pages/CatalogoVinos";
+
+// Componentes de administración
+import RequireAdmin from "./components/RequireAdmin";
+import AdminDashboard from "./pages/admin/AdminDashboard";
+import AdminWines from "./pages/admin/AdminWines";
+import AdminUsers from "./pages/admin/AdminUsers";
 
 
 createRoot(document.getElementById("root")!).render(
@@ -27,11 +32,14 @@ createRoot(document.getElementById("root")!).render(
         <Route path="/login" element={<Login />} />
         <Route path="/registro" element={<Registro />} />
         <Route path="/reserva" element={<Reserva />} />
-        <Route path="/admin" element={<Admin />} />
         <Route path="/test" element={<TestSupabase />} />
         <Route path="/mis-reservas" element={<MisReservas />} />
-        <Route path="/catalogo-vinos" element={<CatalogoVinos />} />  {/* ← AGREGAR ESTA LÍNEA */}
-        
+        <Route path="/catalogo-vinos" element={<CatalogoVinos />} />
+
+        {/* Rutas de administración (protegidas) */}
+        <Route path="/admin" element={<RequireAdmin><AdminDashboard /></RequireAdmin>} />
+        <Route path="/admin/vinos" element={<RequireAdmin><AdminWines /></RequireAdmin>} />
+        <Route path="/admin/usuarios" element={<RequireAdmin><AdminUsers /></RequireAdmin>} />
 
         {/* Si quieres 404 luego: <Route path="*" element={<NotFound />} /> */}
       </Routes>

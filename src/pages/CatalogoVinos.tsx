@@ -5,18 +5,7 @@ import ChatBot from '../components/ChatBot';
 import { supabase } from '../supabaseClient';
 import { getCurrentUser } from '../auth';
 import { isBirthday, applyBirthdayDiscount, getBirthdayDiscountAmount, BIRTHDAY_DISCOUNT_PERCENT } from '../utils/birthday';
-
-// Tipos
-interface Vino {
-  id?: string;
-  nombre: string;
-  tipo: string;
-  pais: string;
-  region: string;
-  precio: number;
-  descripcion: string;
-  imagen?: string;
-}
+import { getAllWines, Wine as Vino } from '../services/wineService';
 
 // Constantes de colores
 const COLORS = {
@@ -31,6 +20,7 @@ const COLORS = {
 };
 
 const CatalogoVinos: React.FC = () => {
+  const [vinos, setVinos] = useState<Vino[]>([]);
   const [filtroTipo, setFiltroTipo] = useState<string>('Todos');
   const [filtroPais, setFiltroPais] = useState<string>('Todos');
   const [busqueda, setBusqueda] = useState<string>('');
@@ -42,84 +32,39 @@ const CatalogoVinos: React.FC = () => {
   const [precioMax, setPrecioMax] = useState<number>(5000);
   const [loading, setLoading] = useState<boolean>(true);
 
-  // Verificar cumpleaños
+  // Cargar datos iniciales
   useEffect(() => {
-    const checkBirthday = async () => {
+    const loadData = async () => {
       try {
+        // Cargar vinos
+        const dataVinos = await getAllWines();
+        setVinos(dataVinos);
+
+        // Verificar cumpleaños
         const user = getCurrentUser();
-        if (!user) {
-          setLoading(false);
-          return;
-        }
-        
-        const { data } = await supabase
-          .from('usuarios')
-          .select('fecha_cumpleanos, nombre')
-          .eq('id', user.id)
-          .single();
-        
-        if (data?.fecha_cumpleanos && isBirthday(data.fecha_cumpleanos)) {
-          setIsBirthdayToday(true);
-          setUserName(data.nombre);
+        if (user) {
+          const { data } = await supabase
+            .from('usuarios')
+            .select('fecha_cumpleanos, nombre')
+            .eq('id', user.id)
+            .single();
+
+          if (data?.fecha_cumpleanos && isBirthday(data.fecha_cumpleanos)) {
+            setIsBirthdayToday(true);
+            setUserName(data.nombre);
+          }
         }
       } catch (error) {
-        console.error('Error al verificar cumpleaños:', error);
+        console.error('Error al cargar datos:', error);
       } finally {
         setLoading(false);
       }
     };
-    checkBirthday();
+    loadData();
   }, []);
 
-  const vinos: Vino[] = [
-    // Tintos
-    { nombre: 'Château Margaux', tipo: 'Tinto', pais: 'Francia', region: 'Burdeos', precio: 450, descripcion: 'Elegante y complejo, con notas de frutas negras y especias' },
-    { nombre: 'Barolo Cannubi', tipo: 'Tinto', pais: 'Italia', region: 'Piamonte', precio: 380, descripcion: 'Robusto y estructurado, ideal para carnes rojas' },
-    { nombre: 'Opus One', tipo: 'Tinto', pais: 'Estados Unidos', region: 'California', precio: 420, descripcion: 'Blend excepcional con gran potencial de guarda' },
-    { nombre: 'Vega Sicilia Único', tipo: 'Tinto', pais: 'España', region: 'Ribera del Duero', precio: 500, descripcion: 'Icónico vino español con elegancia y complejidad' },
-    { nombre: 'Penfolds Grange', tipo: 'Tinto', pais: 'Australia', region: 'Sur de Australia', precio: 650, descripcion: 'Potente y concentrado, uno de los mejores del mundo' },
-    { nombre: 'Catena Zapata Malbec', tipo: 'Tinto', pais: 'Argentina', region: 'Mendoza', precio: 180, descripcion: 'Expresión perfecta del Malbec argentino' },
-    { nombre: 'Château Lafite Rothschild', tipo: 'Tinto', pais: 'Francia', region: 'Burdeos', precio: 850, descripcion: 'Primer cru legendario, sofisticación absoluta' },
-    { nombre: 'Brunello di Montalcino', tipo: 'Tinto', pais: 'Italia', region: 'Toscana', precio: 320, descripcion: 'Sangiovese en su máxima expresión' },
-    { nombre: 'Pingus', tipo: 'Tinto', pais: 'España', region: 'Ribera del Duero', precio: 750, descripcion: 'Vino de culto, producción limitada' },
-    { nombre: 'Screaming Eagle Cabernet', tipo: 'Tinto', pais: 'Estados Unidos', region: 'Napa Valley', precio: 3500, descripcion: 'Ultra premium, uno de los más exclusivos' },
-
-    // Blancos
-    { nombre: 'Chablis Grand Cru', tipo: 'Blanco', pais: 'Francia', region: 'Borgoña', precio: 280, descripcion: 'Mineral y fresco, Chardonnay en su forma más pura' },
-    { nombre: 'Cloudy Bay Sauvignon Blanc', tipo: 'Blanco', pais: 'Nueva Zelanda', region: 'Marlborough', precio: 150, descripcion: 'Aromático y vibrante, notas cítricas' },
-    { nombre: 'Albariño Pazo de Señorans', tipo: 'Blanco', pais: 'España', region: 'Rías Baixas', precio: 95, descripcion: 'Fresco y floral, perfecto para mariscos' },
-    { nombre: 'Gavi di Gavi', tipo: 'Blanco', pais: 'Italia', region: 'Piamonte', precio: 120, descripcion: 'Elegante y delicado, excelente aperitivo' },
-    { nombre: 'Casillero del Diablo Chardonnay', tipo: 'Blanco', pais: 'Chile', region: 'Valle Central', precio: 65, descripcion: 'Equilibrado y versátil, gran relación calidad-precio' },
-    { nombre: 'Riesling Dr. Loosen', tipo: 'Blanco', pais: 'Alemania', region: 'Mosel', precio: 140, descripcion: 'Dulzura equilibrada con acidez refrescante' },
-    { nombre: 'Chassagne-Montrachet', tipo: 'Blanco', pais: 'Francia', region: 'Borgoña', precio: 350, descripcion: 'Gran Chardonnay, complejo y longevo' },
-    { nombre: 'Verdejo Rueda', tipo: 'Blanco', pais: 'España', region: 'Rueda', precio: 55, descripcion: 'Herbáceo y fresco, notas de frutas blancas' },
-
-    // Espumosos
-    { nombre: 'Moët & Chandon', tipo: 'Espumoso', pais: 'Francia', region: 'Champagne', precio: 180, descripcion: 'Champagne icónico, elegante y festivo' },
-    { nombre: 'Prosecco Valdobbiadene', tipo: 'Espumoso', pais: 'Italia', region: 'Véneto', precio: 75, descripcion: 'Ligero y afrutado, perfecto para aperitivos' },
-    { nombre: 'Cava Codorníu', tipo: 'Espumoso', pais: 'España', region: 'Penedés', precio: 60, descripcion: 'Método tradicional, excelente calidad' },
-    { nombre: 'Veuve Clicquot', tipo: 'Espumoso', pais: 'Francia', region: 'Champagne', precio: 220, descripcion: 'Champagne de gran prestigio y elegancia' },
-    { nombre: 'Chandon Brut', tipo: 'Espumoso', pais: 'Argentina', region: 'Mendoza', precio: 85, descripcion: 'Espumoso argentino de alta calidad' },
-    { nombre: 'Franciacorta Ca del Bosco', tipo: 'Espumoso', pais: 'Italia', region: 'Lombardía', precio: 190, descripcion: 'Método clásico italiano, refinado' },
-
-    // Rosados
-    { nombre: 'Whispering Angel', tipo: 'Rosado', pais: 'Francia', region: 'Provenza', precio: 110, descripcion: 'Rosado de culto, elegante y refrescante' },
-    { nombre: 'Mateus Rosé', tipo: 'Rosado', pais: 'Portugal', region: 'Portugal', precio: 45, descripcion: 'Clásico portugués, ligero y afrutado' },
-    { nombre: 'Marqués de Cáceres Rosado', tipo: 'Rosado', pais: 'España', region: 'Rioja', precio: 55, descripcion: 'Fresco y versátil, excelente para el verano' },
-
-    // Dulces/Fortificados
-    { nombre: 'Sauternes Château d\'Yquem', tipo: 'Dulce', pais: 'Francia', region: 'Burdeos', precio: 550, descripcion: 'El mejor vino dulce del mundo' },
-    { nombre: 'Oporto Taylor\'s', tipo: 'Fortificado', pais: 'Portugal', region: 'Valle del Duero', precio: 180, descripcion: 'Porto vintage, complejo y longevo' },
-    { nombre: 'Pedro Ximénez González Byass', tipo: 'Dulce Fortificado', pais: 'España', region: 'Jerez', precio: 120, descripcion: 'Intensamente dulce, perfecto para postres' },
-
-    // Costa Rica
-    { nombre: 'Viñedos Altamira Tinto', tipo: 'Tinto', pais: 'Costa Rica', region: 'Coto Brus', precio: 85, descripcion: 'Orgullo local, producción artesanal' },
-    { nombre: 'Viñedos Altamira Blanco', tipo: 'Blanco', pais: 'Costa Rica', region: 'Coto Brus', precio: 80, descripcion: 'Vino blanco costarricense único' },
-    { nombre: 'Viñedos Altamira Rosado', tipo: 'Rosado', pais: 'Costa Rica', region: 'Coto Brus', precio: 75, descripcion: 'Frescura tropical en cada copa' }
-  ];
-
   const tipos = ['Todos', 'Tinto', 'Blanco', 'Espumoso', 'Rosado', 'Dulce', 'Dulce Fortificado', 'Fortificado'];
-  const paises = ['Todos', ...new Set(vinos.map(v => v.pais))].sort();
+  const paises = useMemo(() => ['Todos', ...new Set(vinos.map(v => v.pais))].sort(), [vinos]);
 
   // Filtrado y ordenamiento con useMemo
   const vinosFiltrados = useMemo(() => {
@@ -163,12 +108,12 @@ const CatalogoVinos: React.FC = () => {
 
   if (loading) {
     return (
-      <div style={{ 
-        minHeight: '100vh', 
-        display: 'flex', 
-        justifyContent: 'center', 
+      <div style={{
+        minHeight: '100vh',
+        display: 'flex',
+        justifyContent: 'center',
         alignItems: 'center',
-        background: COLORS.background 
+        background: COLORS.background
       }}>
         <div style={{ textAlign: 'center' }}>
           <Wine size={64} color={COLORS.primary} style={{ animation: 'pulse 2s infinite' }} />
@@ -475,10 +420,10 @@ const CatalogoVinos: React.FC = () => {
           {vinosFiltrados.map((vino, index) => {
             const precioFinal = isBirthdayToday ? Math.round(applyBirthdayDiscount(vino.precio)) : vino.precio;
             const ahorroDescuento = isBirthdayToday ? Math.round(getBirthdayDiscountAmount(vino.precio)) : 0;
-            
+
             return (
-              <div 
-                key={index} 
+              <div
+                key={index}
                 style={{
                   background: COLORS.white,
                   borderRadius: '15px',
@@ -555,6 +500,25 @@ const CatalogoVinos: React.FC = () => {
                   {vino.descripcion}
                 </p>
 
+                {/* Stock info */}
+                {vino.stock !== undefined && (
+                  <div style={{
+                    marginBottom: '10px',
+                    padding: '8px',
+                    background: (vino.stock || 0) === 0 ? '#fee' : (vino.stock || 0) <= (vino.stock_minimo || 0) ? '#fff3cd' : '#e8f5e9',
+                    borderRadius: '6px',
+                    textAlign: 'center'
+                  }}>
+                    <span style={{
+                      fontSize: '0.9rem',
+                      fontWeight: 600,
+                      color: (vino.stock || 0) === 0 ? '#c00' : (vino.stock || 0) <= (vino.stock_minimo || 0) ? '#856404' : '#2e7d32'
+                    }}>
+                      {(vino.stock || 0) === 0 ? '🚫 AGOTADO' : `Disponible(s): ${vino.stock} ${(vino.stock || 0) <= (vino.stock_minimo || 0) ? '⚠️' : ''}`}
+                    </span>
+                  </div>
+                )}
+
                 {/* Precio */}
                 <div style={{
                   borderTop: `1px solid ${COLORS.border}`,
@@ -571,7 +535,7 @@ const CatalogoVinos: React.FC = () => {
                   }}>
                     Precio
                   </span>
-                  
+
                   {isBirthdayToday ? (
                     <div>
                       <span style={{
@@ -584,9 +548,9 @@ const CatalogoVinos: React.FC = () => {
                       }}>
                         ${vino.precio}
                       </span>
-                      <div style={{ 
-                        display: 'flex', 
-                        justifyContent: 'space-between', 
+                      <div style={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
                         alignItems: 'center',
                         flexWrap: 'wrap',
                         gap: '8px'
@@ -627,16 +591,18 @@ const CatalogoVinos: React.FC = () => {
                 {/* Botón agregar al carrito */}
                 <button
                   onClick={() => agregarAlCarrito(vino)}
+                  disabled={(vino.stock || 0) === 0}
                   style={{
                     width: '100%',
                     padding: '12px',
-                    background: COLORS.primary,
+                    background: (vino.stock || 0) === 0 ? '#ccc' : COLORS.primary,
                     color: 'white',
                     border: 'none',
                     borderRadius: '8px',
                     fontSize: '14px',
                     fontWeight: 600,
-                    cursor: 'pointer',
+                    cursor: (vino.stock || 0) === 0 ? 'not-allowed' : 'pointer',
+                    opacity: (vino.stock || 0) === 0 ? 0.6 : 1,
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
@@ -644,17 +610,21 @@ const CatalogoVinos: React.FC = () => {
                     transition: 'all 0.3s ease'
                   }}
                   onMouseEnter={(e) => {
-                    e.currentTarget.style.background = '#7a0020';
-                    e.currentTarget.style.transform = 'scale(1.02)';
+                    if ((vino.stock || 0) > 0) {
+                      e.currentTarget.style.background = '#7a0020';
+                      e.currentTarget.style.transform = 'scale(1.02)';
+                    }
                   }}
                   onMouseLeave={(e) => {
-                    e.currentTarget.style.background = COLORS.primary;
-                    e.currentTarget.style.transform = 'scale(1)';
+                    if ((vino.stock || 0) > 0) {
+                      e.currentTarget.style.background = COLORS.primary;
+                      e.currentTarget.style.transform = 'scale(1)';
+                    }
                   }}
                   aria-label={`Agregar ${vino.nombre} al carrito`}
                 >
                   <ShoppingCart size={18} />
-                  Agregar al Carrito
+                  {(vino.stock || 0) === 0 ? 'Agotado' : 'Agregar al Carrito'}
                 </button>
               </div>
             );
