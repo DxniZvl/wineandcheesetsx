@@ -113,7 +113,7 @@ export async function updateWine(id: string, updates: Partial<Wine>): Promise<Wi
 export async function deleteWine(id: string): Promise<boolean> {
     const { error } = await supabase
         .from('vinos')
-        .update({ activo: false })
+        .delete()
         .eq('id', id)
 
     if (error) {
