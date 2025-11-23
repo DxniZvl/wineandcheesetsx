@@ -621,27 +621,7 @@ export default function Carrito() {
                                 {loading ? 'Procesando...' : 'Confirmar Pedido'}
                             </button>
 
-                            <button
-                                onClick={handleDownloadQuote}
-                                style={{
-                                    width: '100%',
-                                    padding: '12px',
-                                    background: 'transparent',
-                                    color: COLORS.primary,
-                                    border: `2px solid ${COLORS.primary}`,
-                                    borderRadius: '10px',
-                                    fontSize: '1rem',
-                                    fontWeight: 'bold',
-                                    cursor: 'pointer',
-                                    marginTop: '15px',
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                    gap: '8px'
-                                }}
-                            >
-                                <span></span> Descargar Cotización
-                            </button>
+                        
 
                             <p style={{
                                 margin: '20px 0 0 0',

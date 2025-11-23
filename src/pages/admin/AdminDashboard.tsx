@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react'
 import AdminLayout from '../../components/AdminLayout'
 import { getWineStats } from '../../services/wineService'
-import { Wine, Users, AlertTriangle, Package, Calendar } from 'lucide-react'
+import { Wine, Users, AlertTriangle, Package, Calendar, ShoppingCart } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 import { supabase } from '../../supabaseClient'
 
@@ -36,6 +36,7 @@ export default function AdminDashboard() {
         stock_total: 0
     })
     const [reservasPendientes, setReservasPendientes] = useState(0)
+    const [pedidosPendientes, setPedidosPendientes] = useState(0)
     const [loading, setLoading] = useState(true)
 
     useEffect(() => {
@@ -55,6 +56,16 @@ export default function AdminDashboard() {
 
             if (!error && count !== null) {
                 setReservasPendientes(count)
+            }
+
+            // Fetch pending orders count
+            const { count: ordersCount, error: ordersError } = await supabase
+                .from('pedidos')
+                .select('*', { count: 'exact', head: true })
+                .eq('estado', 'pendiente')
+
+            if (!ordersError && ordersCount !== null) {
+                setPedidosPendientes(ordersCount)
             }
         } catch (error) {
             console.error('Error loading stats:', error)
@@ -103,6 +114,14 @@ export default function AdminDashboard() {
             color: '#10b981',
             bgColor: 'rgba(16, 185, 129, 0.1)',
             action: () => navigate('/admin/vinos')
+        },
+        {
+            title: 'Pedidos Pendientes',
+            value: pedidosPendientes,
+            icon: ShoppingCart,
+            color: '#8b5cf6',
+            bgColor: 'rgba(139, 92, 246, 0.1)',
+            action: () => navigate('/admin/pedidos')
         }
     ]
 
@@ -283,6 +302,36 @@ export default function AdminDashboard() {
                     >
                         <Calendar size={20} />
                         Gestionar Reservas
+                    </button>
+
+                    <button
+                        onClick={() => navigate('/admin/pedidos')}
+                        style={{
+                            padding: '15px 20px',
+                            background: '#8b5cf6',
+                            color: 'white',
+                            border: 'none',
+                            borderRadius: '8px',
+                            fontSize: '1rem',
+                            fontWeight: 600,
+                            cursor: 'pointer',
+                            transition: 'all 0.3s ease',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '10px',
+                            justifyContent: 'center'
+                        }}
+                        onMouseEnter={(e) => {
+                            e.currentTarget.style.background = '#7c3aed'
+                            e.currentTarget.style.transform = 'scale(1.02)'
+                        }}
+                        onMouseLeave={(e) => {
+                            e.currentTarget.style.background = '#8b5cf6'
+                            e.currentTarget.style.transform = 'scale(1)'
+                        }}
+                    >
+                        <ShoppingCart size={20} />
+                        Gestionar Pedidos
                     </button>
 
                     <button

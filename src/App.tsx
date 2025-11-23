@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './style.css';
 import { useNavigate } from 'react-router-dom';
 import { getCurrentUser, clearCurrentUser, isAdmin, WineUser } from './auth';
+import { clearCart } from './utils/cartUtils';
 import ChatBot from './components/ChatBot';
 import CartIcon from './components/CartIcon';
 
@@ -83,6 +84,9 @@ const WineAndCheeseHome: React.FC = () => {
     // 🧹 Limpiar historial del ChatBot al cerrar sesión
     localStorage.removeItem('chatbot_messages');
     localStorage.removeItem('chatbot_isOpen');
+
+    // 🛒 Limpiar carrito al cerrar sesión
+    clearCart();
 
     clearCurrentUser();
     setUser(null);

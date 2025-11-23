@@ -2,6 +2,7 @@
 import { ReactNode } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { getCurrentUser, clearCurrentUser } from '../auth'
+import { clearCart } from '../utils/cartUtils'
 import { Home, Wine, Users, LogOut, BarChart3, Calendar } from 'lucide-react'
 
 interface AdminLayoutProps {
@@ -32,6 +33,9 @@ export default function AdminLayout({ children, title }: AdminLayoutProps) {
         // 🧹 Limpiar historial del ChatBot al cerrar sesión
         localStorage.removeItem('chatbot_messages');
         localStorage.removeItem('chatbot_isOpen');
+
+        // 🛒 Limpiar carrito al cerrar sesión
+        clearCart();
 
         clearCurrentUser()
         navigate('/')

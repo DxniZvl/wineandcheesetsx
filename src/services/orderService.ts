@@ -107,24 +107,7 @@ export const createOrder = async (
 
         if (itemsError) throw itemsError
 
-        // 5. Reducir stock (manual update)
-        for (const item of items) {
-            // Obtener stock actual
-            const { data: vino } = await supabase
-                .from('vinos')
-                .select('stock')
-                .eq('id', item.vino_id)
-                .single();
-            const currentStock = vino?.stock ?? 0;
-            const newStock = currentStock - item.cantidad;
-            if (newStock < 0) {
-                throw new Error(`Stock negativo para ${item.nombre}`);
-            }
-            await supabase
-                .from('vinos')
-                .update({ stock: newStock })
-                .eq('id', item.vino_id);
-        }
+        
 
         return pedido
     } catch (error) {
@@ -231,32 +214,31 @@ export const updateOrderStatus = async (
 
         if (error) throw error
 
-        // Si se cancela o expira, devolver stock
-        if (returnStock && (estado === 'cancelado' || estado === 'expirado')) {
-            // Si se cancela o expira, devolver stock (manual update)
-            if (returnStock && (estado === 'cancelado' || estado === 'expirado')) {
-                const { data: items } = await supabase
-                    .from('pedido_items')
-                    .select('vino_id, cantidad')
-                    .eq('pedido_id', orderId)
+                // Si se completa, reducir stock
+        if (estado === 'completado') {
+            const { data: items } = await supabase
+                .from('pedido_items')
+                .select('vino_id, cantidad')
+                .eq('pedido_id', orderId)
 
-                for (const item of items || []) {
-                    // Obtener stock actual
-                    const { data: vino } = await supabase
-                        .from('vinos')
-                        .select('stock')
-                        .eq('id', item.vino_id)
-                        .single()
-                    const currentStock = vino?.stock ?? 0
-                    const newStock = currentStock + item.cantidad
-                    await supabase
-                        .from('vinos')
-                        .update({ stock: newStock })
-                        .eq('id', item.vino_id)
+            for (const item of items || []) {
+                // Obtener stock actual
+                const { data: vino } = await supabase
+                    .from('vinos')
+                    .select('stock')
+                    .eq('id', item.vino_id)
+                    .single()
+                const currentStock = vino?.stock ?? 0
+                const newStock = currentStock - item.cantidad
+                if (newStock < 0) {
+                    throw new Error(`Stock insuficiente para completar el pedido`)
                 }
+                await supabase
+                    .from('vinos')
+                    .update({ stock: newStock })
+                    .eq('id', item.vino_id)
             }
         }
-
         return true
     } catch (error) {
         console.error('Error updating order status:', error)

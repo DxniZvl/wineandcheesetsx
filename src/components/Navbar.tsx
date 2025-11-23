@@ -3,6 +3,7 @@ import React, { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 import { getCurrentUser, clearCurrentUser, isAdmin } from "../auth";
+import { clearCart } from "../utils/cartUtils";
 // 👆 This replaces the fake useAuth()
 
 const Navbar: React.FC = () => {
@@ -13,6 +14,9 @@ const Navbar: React.FC = () => {
     // 🧹 Limpiar historial del ChatBot al cerrar sesión
     localStorage.removeItem('chatbot_messages');
     localStorage.removeItem('chatbot_isOpen');
+
+    // 🛒 Limpiar carrito al cerrar sesión
+    clearCart();
 
     clearCurrentUser();        // remove session
     navigate("/");            // redirect to Home

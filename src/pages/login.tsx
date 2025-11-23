@@ -3,6 +3,7 @@ import { FormEvent, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import '../style.css'
 import { supabase } from '../supabaseClient'
+import { clearCart } from '../utils/cartUtils'
 
 
 export default function Login() {
@@ -59,6 +60,9 @@ export default function Login() {
     // 🧹 Limpiar historial del ChatBot al iniciar sesión
     localStorage.removeItem('chatbot_messages')
     localStorage.removeItem('chatbot_isOpen')
+
+    // 🛒 Limpiar carrito al iniciar sesión
+    clearCart()
 
     // ⭐ Guardar datos del usuario logueado incluyendo role y can_edit
     setCurrentUser({

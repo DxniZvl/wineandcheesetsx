@@ -22,6 +22,7 @@ import AdminDashboard from "./pages/admin/AdminDashboard";
 import AdminWines from "./pages/admin/AdminWines";
 import AdminUsers from "./pages/admin/AdminUsers";
 import AdminReservations from "./pages/admin/AdminReservations";
+import AdminOrders from "./pages/admin/AdminOrders";
 
 
 createRoot(document.getElementById("root")!).render(
@@ -44,6 +45,7 @@ createRoot(document.getElementById("root")!).render(
         <Route path="/admin/vinos" element={<RequireAdmin><AdminWines /></RequireAdmin>} />
         <Route path="/admin/usuarios" element={<RequireAdmin><AdminUsers /></RequireAdmin>} />
         <Route path="/admin/reservas" element={<RequireAdmin><AdminReservations /></RequireAdmin>} />
+        <Route path="/admin/pedidos" element={<RequireAdmin><AdminOrders /></RequireAdmin>} />
 
         {/* Si quieres 404 luego: <Route path="*" element={<NotFound />} /> */}
       </Routes>
