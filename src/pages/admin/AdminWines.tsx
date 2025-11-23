@@ -353,7 +353,7 @@ export default function AdminWines() {
                 overflow: 'hidden',
                 boxShadow: '0 4px 12px rgba(0,0,0,0.08)'
             }}>
-                <div style={{ overflowX: 'auto' }}>
+                <div className="table-responsive" style={{ overflowX: 'auto' }}>
                     <table style={{
                         width: '100%',
                         borderCollapse: 'collapse'

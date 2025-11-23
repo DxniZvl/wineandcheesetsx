@@ -428,7 +428,7 @@ const CatalogoVinos: React.FC = () => {
         </p>
 
         {/* GRID DE VINOS */}
-        <div style={{
+        <div className="wine-grid" style={{
           display: 'grid',
           gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))',
           gap: '25px',

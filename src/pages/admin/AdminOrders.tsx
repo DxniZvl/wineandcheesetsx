@@ -198,7 +198,7 @@ export default function AdminOrders() {
                         <p>No hay pedidos {filter !== 'all' ? `con estado "${getStatusLabel(filter)}"` : ''}</p>
                     </div>
                 ) : (
-                    <div style={{ overflowX: 'auto' }}>
+                    <div className="table-responsive" style={{ overflowX: 'auto' }}>
                         <table style={{
                             width: '100%',
                             borderCollapse: 'collapse',

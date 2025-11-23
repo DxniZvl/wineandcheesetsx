@@ -415,14 +415,7 @@ export default function Carrito() {
                             padding: '25px'
                         }}>
                             {cartItems.map((item) => (
-                                <div key={item.vino_id} style={{
-                                    display: 'grid',
-                                    gridTemplateColumns: '80px 1fr auto',
-                                    gap: '20px',
-                                    padding: '20px 0',
-                                    borderBottom: `1px solid ${COLORS.border}`,
-                                    alignItems: 'center'
-                                }}>
+                                <div key={item.vino_id} className="cart-item">
                                     {/* Imagen */}
                                     <div style={{
                                         width: '80px',
@@ -621,7 +614,7 @@ export default function Carrito() {
                                 {loading ? 'Procesando...' : 'Confirmar Pedido'}
                             </button>
 
-                        
+
 
                             <p style={{
                                 margin: '20px 0 0 0',

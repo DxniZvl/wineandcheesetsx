@@ -1,6 +1,7 @@
 // src/components/Navbar.tsx
 import React, { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { Menu, X } from "lucide-react";
 
 import { getCurrentUser, clearCurrentUser, isAdmin } from "../auth";
 import { clearCart } from "../utils/cartUtils";
@@ -8,6 +9,7 @@ import { clearCart } from "../utils/cartUtils";
 
 const Navbar: React.FC = () => {
   const navigate = useNavigate();
+  const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   const user = getCurrentUser(); // 👈 read session from localStorage
 
   const handleLogout = () => {
@@ -42,15 +44,31 @@ const Navbar: React.FC = () => {
         <h1 className="companyname">Wine and Cheese</h1>
       </div>
 
+      {/* Hamburger Menu Button */}
+      <button
+        className="mobile-menu-btn"
+        onClick={() => setIsMenuOpen(!isMenuOpen)}
+        style={{
+          display: 'none', // Hidden by default, shown in media query
+          background: 'none',
+          border: 'none',
+          color: 'white',
+          cursor: 'pointer',
+          zIndex: 1001
+        }}
+      >
+        {isMenuOpen ? <X size={28} /> : <Menu size={28} />}
+      </button>
+
       <div className="nav-container">
-        <nav className="nav-links">
-          <a href="/#nosotros">Nosotros</a>
-          <Link to="/menu">Menú</Link>
-          <Link to="/eventos">Eventos</Link>
-          <a href="/eventos#juegos">Juegos</a>
-          <a href="/#contactos">Contacto</a>
+        <nav className={`nav-links ${isMenuOpen ? 'active' : ''}`}>
+          <a href="/#nosotros" onClick={() => setIsMenuOpen(false)}>Nosotros</a>
+          <Link to="/menu" onClick={() => setIsMenuOpen(false)}>Menú</Link>
+          <Link to="/eventos" onClick={() => setIsMenuOpen(false)}>Eventos</Link>
+          <a href="/eventos#juegos" onClick={() => setIsMenuOpen(false)}>Juegos</a>
+          <a href="/#contactos" onClick={() => setIsMenuOpen(false)}>Contacto</a>
           {user && isAdmin(user) && (
-            <Link to="/admin" style={{
+            <Link to="/admin" onClick={() => setIsMenuOpen(false)} style={{
               color: '#d4af37',
               fontWeight: 'bold',
               borderBottom: '2px solid #d4af37'
@@ -90,6 +108,20 @@ const Navbar: React.FC = () => {
           </Link>
         )}
       </div>
+      <style>{`
+        @media (max-width: 768px) {
+          .mobile-menu-btn {
+            display: block !important;
+            position: absolute;
+            right: 20px;
+            top: 20px;
+          }
+          
+          .nav-container {
+            justify-content: flex-end;
+          }
+        }
+      `}</style>
     </header>
   );
 };
