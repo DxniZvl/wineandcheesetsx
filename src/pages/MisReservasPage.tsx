@@ -407,7 +407,7 @@ export default function MisReservas() {
               </p>
               <button
                 type="button"
-                onClick={() => navigate('/reservas')}
+                onClick={() => navigate('/reserva')}
                 style={{
                   background: 'linear-gradient(135deg, #5a0015 0%, #8b0025 100%)',
                   color: 'white',
