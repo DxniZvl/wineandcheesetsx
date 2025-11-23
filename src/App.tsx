@@ -156,7 +156,7 @@ const WineAndCheeseHome: React.FC = () => {
               type="button"
               onClick={() => navigate('/login')}
             >
-              Reservas
+              Iniciar Sesión
             </button>
           )}
         </div>

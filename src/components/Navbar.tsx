@@ -82,7 +82,7 @@ const Navbar: React.FC = () => {
         ) : (
           // If no logged user
           <Link to="/login" className="reserva-btn">
-            Reservas
+            Iniciar Sesión
           </Link>
         )}
       </div>
