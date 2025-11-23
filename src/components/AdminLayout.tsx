@@ -3,7 +3,7 @@ import { ReactNode } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { getCurrentUser, clearCurrentUser } from '../auth'
 import { clearCart } from '../utils/cartUtils'
-import { Home, Wine, Users, LogOut, BarChart3, Calendar } from 'lucide-react'
+import { Home, Wine, Users, LogOut, BarChart3, Calendar, ShoppingCart } from 'lucide-react'
 
 interface AdminLayoutProps {
     children: ReactNode
@@ -45,7 +45,8 @@ export default function AdminLayout({ children, title }: AdminLayoutProps) {
         { path: '/admin', icon: BarChart3, label: 'Dashboard' },
         { path: '/admin/vinos', icon: Wine, label: 'Gestión de Vinos' },
         { path: '/admin/usuarios', icon: Users, label: 'Gestión de Usuarios' },
-        { path: '/admin/reservas', icon: Calendar, label: 'Gestión de Reservas' }
+        { path: '/admin/reservas', icon: Calendar, label: 'Gestión de Reservas' },
+        { path: '/admin/pedidos', icon: ShoppingCart, label: 'Gestión de Pedidos' }
     ]
 
     return (

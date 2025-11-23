@@ -292,7 +292,7 @@ export default function Carrito() {
                         onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.02)'}
                         onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
                     >
-                        <span>📄</span> Descargar Recibo
+                        <span></span> Descargar Recibo
                     </button>
 
                     <button
