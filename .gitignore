@@ -41,7 +41,7 @@ database/*
 *.sqlite
 
 # Backend (si no lo necesitas en el deploy de Vercel)
-backend
+
 
 # Misc
 .cache
