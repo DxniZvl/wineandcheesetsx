@@ -8,11 +8,32 @@ export function isBirthday(fechaCumpleanos: string | Date | null | undefined): b
     if (!fechaCumpleanos) return false;
 
     const today = new Date();
-    const birthday = new Date(fechaCumpleanos);
+    let birthdayMonth: number;
+    let birthdayDay: number;
 
-    // Comparar solo mes y día (ignorar año)
-    return today.getMonth() === birthday.getMonth()
-        && today.getDate() === birthday.getDate();
+    if (typeof fechaCumpleanos === 'string') {
+        // Asumimos formato YYYY-MM-DD que viene de Supabase
+        // Dividimos el string para evitar problemas de zona horaria (UTC vs Local)
+        const parts = fechaCumpleanos.split('-');
+        if (parts.length === 3) {
+            // Mes es 0-indexed en JS (0 = Enero, 11 = Diciembre)
+            birthdayMonth = parseInt(parts[1], 10) - 1;
+            birthdayDay = parseInt(parts[2], 10);
+        } else {
+            // Fallback por si el formato no es el esperado
+            const d = new Date(fechaCumpleanos);
+            birthdayMonth = d.getUTCMonth();
+            birthdayDay = d.getUTCDate();
+        }
+    } else {
+        const d = new Date(fechaCumpleanos);
+        birthdayMonth = d.getMonth();
+        birthdayDay = d.getDate();
+    }
+
+    // Comparar solo mes y día
+    return today.getMonth() === birthdayMonth
+        && today.getDate() === birthdayDay;
 }
 
 /**

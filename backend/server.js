@@ -23,7 +23,7 @@ app.post('/api/chat', async (req, res) => {
   try {
     const { message } = req.body;
 
-    // Usando gemini-2.0-flash (modelo estable y disponible)
+    // Usando gemini-1.5-flash (versión estable)
     const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
 
     const systemPrompt = `Eres un asistente virtual experto de Wine and Cheese, un restaurante elegante especializado en vinos y quesos en Alajuela, Costa Rica.

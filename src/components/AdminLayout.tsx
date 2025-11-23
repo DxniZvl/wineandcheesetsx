@@ -151,6 +151,34 @@ export default function AdminLayout({ children, title }: AdminLayoutProps) {
                     gap: '10px'
                 }}>
                     <button
+                        onClick={() => navigate('/catalogo')}
+                        style={{
+                            width: '100%',
+                            padding: '10px',
+                            background: 'rgba(255, 255, 255, 0.1)',
+                            border: 'none',
+                            borderRadius: '8px',
+                            color: 'white',
+                            cursor: 'pointer',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            gap: '8px',
+                            fontSize: '0.9rem',
+                            transition: 'all 0.2s ease'
+                        }}
+                        onMouseEnter={(e) => {
+                            e.currentTarget.style.background = 'rgba(255, 255, 255, 0.2)'
+                        }}
+                        onMouseLeave={(e) => {
+                            e.currentTarget.style.background = 'rgba(255, 255, 255, 0.1)'
+                        }}
+                    >
+                        <Wine size={18} />
+                        Ir al Catálogo
+                    </button>
+
+                    <button
                         onClick={() => navigate('/')}
                         style={{
                             width: '100%',
@@ -175,7 +203,7 @@ export default function AdminLayout({ children, title }: AdminLayoutProps) {
                         }}
                     >
                         <Home size={18} />
-                        Ir al Sitio
+                        Ir al Inicio
                     </button>
 
                     <button

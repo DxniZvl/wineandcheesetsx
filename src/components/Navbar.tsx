@@ -10,6 +10,10 @@ const Navbar: React.FC = () => {
   const user = getCurrentUser(); // 👈 read session from localStorage
 
   const handleLogout = () => {
+    // 🧹 Limpiar historial del ChatBot al cerrar sesión
+    localStorage.removeItem('chatbot_messages');
+    localStorage.removeItem('chatbot_isOpen');
+
     clearCurrentUser();        // remove session
     navigate("/");            // redirect to Home
   };

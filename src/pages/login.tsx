@@ -56,6 +56,10 @@ export default function Login() {
       return
     }
 
+    // 🧹 Limpiar historial del ChatBot al iniciar sesión
+    localStorage.removeItem('chatbot_messages')
+    localStorage.removeItem('chatbot_isOpen')
+
     // ⭐ Guardar datos del usuario logueado incluyendo role y can_edit
     setCurrentUser({
       id: user.id,
