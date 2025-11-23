@@ -51,7 +51,7 @@ const Navbar: React.FC = () => {
               fontWeight: 'bold',
               borderBottom: '2px solid #d4af37'
             }}>
-              🛠️ Admin
+              Admin
             </Link>
           )}
         </nav>

@@ -29,6 +29,10 @@ export default function AdminLayout({ children, title }: AdminLayoutProps) {
     const user = getCurrentUser()
 
     const handleLogout = () => {
+        // 🧹 Limpiar historial del ChatBot al cerrar sesión
+        localStorage.removeItem('chatbot_messages');
+        localStorage.removeItem('chatbot_isOpen');
+
         clearCurrentUser()
         navigate('/')
     }
@@ -63,7 +67,7 @@ export default function AdminLayout({ children, title }: AdminLayoutProps) {
                         fontFamily: '"Playfair Display", serif',
                         color: COLORS.secondary
                     }}>
-                        🍷 Wine & Cheese
+                        Wine & Cheese
                     </h2>
                     <p style={{
                         margin: '5px 0 0',
@@ -151,7 +155,7 @@ export default function AdminLayout({ children, title }: AdminLayoutProps) {
                     gap: '10px'
                 }}>
                     <button
-                        onClick={() => navigate('/catalogo')}
+                        onClick={() => navigate('/catalogo-vinos')}
                         style={{
                             width: '100%',
                             padding: '10px',

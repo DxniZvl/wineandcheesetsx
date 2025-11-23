@@ -1,23 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import './style.css';
 import { useNavigate } from 'react-router-dom';
-import { getCurrentUser, clearCurrentUser } from './auth';
+import { getCurrentUser, clearCurrentUser, isAdmin, WineUser } from './auth';
 import ChatBot from './components/ChatBot';
-
-interface User {
-  id: string;
-  nombre: string;
-}
 
 const WineAndCheeseHome: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<WineUser | null>(null);
   const navigate = useNavigate();
 
   // Cargar usuario real desde localStorage
   useEffect(() => {
     const u = getCurrentUser();
-    if (u) setUser({ id: String(u.id), nombre: u.nombre });
+    if (u) setUser({ id: u.id, nombre: u.nombre, apellido: u.apellido, email: u.email, role: u.role });
   }, []);
 
   // Navbar scroll animation
@@ -84,6 +79,10 @@ const WineAndCheeseHome: React.FC = () => {
   };
 
   const handleLogout = () => {
+    // 🧹 Limpiar historial del ChatBot al cerrar sesión
+    localStorage.removeItem('chatbot_messages');
+    localStorage.removeItem('chatbot_isOpen');
+
     clearCurrentUser();
     setUser(null);
     navigate('/');
@@ -121,6 +120,15 @@ const WineAndCheeseHome: React.FC = () => {
             >
               Contacto
             </a>
+            {user && isAdmin(user) && (
+              <a href="/admin" style={{
+                color: '#d4af37',
+                fontWeight: 'bold',
+                borderBottom: '2px solid #d4af37'
+              }}>
+                Admin
+              </a>
+            )}
           </nav>
 
           {/* Botones según login */}
@@ -169,7 +177,7 @@ const WineAndCheeseHome: React.FC = () => {
             <a href="/menu" className="vino-button">
               Menú
             </a>
-            
+
           </div>
         </div>
       </section>
@@ -302,7 +310,7 @@ const WineAndCheeseHome: React.FC = () => {
         </div>
       </section>
       {/* Bot de ayuda flotante */}
-      <ChatBot />
+      <ChatBot key={user ? user.id : 'guest'} />
     </div>
   );
 };
