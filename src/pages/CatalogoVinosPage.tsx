@@ -459,23 +459,56 @@ const CatalogoVinos: React.FC = () => {
                   e.currentTarget.style.boxShadow = '0 8px 20px rgba(0, 0, 0, 0.08)';
                 }}
               >
-
-                {/* Encabezado con tipo */}
+                {/* Imagen del Vino (Placeholder o Real) */}
                 <div style={{
+                  width: '100%',
+                  height: '200px',
+                  background: '#f9f9f9',
+                  borderRadius: '10px',
+                  marginBottom: '20px',
                   display: 'flex',
-                  justifyContent: 'space-between',
                   alignItems: 'center',
-                  marginBottom: '15px'
+                  justifyContent: 'center',
+                  overflow: 'hidden',
+                  position: 'relative'
                 }}>
-                  <Wine size={28} color={COLORS.primary} />
+                  {vino.imagen ? (
+                    <img
+                      src={vino.imagen}
+                      alt={vino.nombre}
+                      style={{
+                        width: '100%',
+                        height: '100%',
+                        objectFit: 'contain',
+                        padding: '10px'
+                      }}
+                    />
+                  ) : (
+                    <div style={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      alignItems: 'center',
+                      gap: '10px',
+                      color: '#ccc'
+                    }}>
+                      <Wine size={48} strokeWidth={1} />
+                      <span style={{ fontSize: '0.9rem' }}>Imagen próximamente</span>
+                    </div>
+                  )}
+
+                  {/* Badge de Tipo flotante */}
                   <span style={{
+                    position: 'absolute',
+                    top: '10px',
+                    right: '10px',
                     background: COLORS.primary,
                     color: 'white',
                     padding: '4px 12px',
                     borderRadius: '999px',
                     fontSize: '12px',
                     fontWeight: 600,
-                    textTransform: 'uppercase'
+                    textTransform: 'uppercase',
+                    boxShadow: '0 2px 8px rgba(0,0,0,0.2)'
                   }}>
                     {vino.tipo}
                   </span>
