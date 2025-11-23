@@ -1,4 +1,4 @@
-// src/pages/Menu.tsx
+// src/pages/MenuPage.tsx
 import React, { useEffect, useRef, useState } from "react";
 import Navbar from "../components/Navbar";
 import ChatBot from "../components/ChatBot";
