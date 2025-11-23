@@ -14,12 +14,14 @@ import Reserva from "./pages/Reserva";
 import TestSupabase from "./pages/TestSupabase";
 import MisReservas from "./pages/MisReservas";
 import CatalogoVinos from "./pages/CatalogoVinos";
+import Carrito from "./pages/Carrito";
 
 // Componentes de administración
 import RequireAdmin from "./components/RequireAdmin";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import AdminWines from "./pages/admin/AdminWines";
 import AdminUsers from "./pages/admin/AdminUsers";
+import AdminReservations from "./pages/admin/AdminReservations";
 
 
 createRoot(document.getElementById("root")!).render(
@@ -35,11 +37,13 @@ createRoot(document.getElementById("root")!).render(
         <Route path="/test" element={<TestSupabase />} />
         <Route path="/mis-reservas" element={<MisReservas />} />
         <Route path="/catalogo-vinos" element={<CatalogoVinos />} />
+        <Route path="/carrito" element={<Carrito />} />
 
         {/* Rutas de administración (protegidas) */}
         <Route path="/admin" element={<RequireAdmin><AdminDashboard /></RequireAdmin>} />
         <Route path="/admin/vinos" element={<RequireAdmin><AdminWines /></RequireAdmin>} />
         <Route path="/admin/usuarios" element={<RequireAdmin><AdminUsers /></RequireAdmin>} />
+        <Route path="/admin/reservas" element={<RequireAdmin><AdminReservations /></RequireAdmin>} />
 
         {/* Si quieres 404 luego: <Route path="*" element={<NotFound />} /> */}
       </Routes>

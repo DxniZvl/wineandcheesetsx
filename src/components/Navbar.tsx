@@ -66,7 +66,7 @@ const Navbar: React.FC = () => {
             </span>
 
             {/* Reservations button */}
-            <Link to="/Reserva" className="reserva-btn">
+            <Link to="/mis-reservas" className="reserva-btn">
               Mis Reservas
             </Link>
 

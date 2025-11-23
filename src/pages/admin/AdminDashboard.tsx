@@ -2,8 +2,9 @@
 import { useState, useEffect } from 'react'
 import AdminLayout from '../../components/AdminLayout'
 import { getWineStats } from '../../services/wineService'
-import { Wine, Users, AlertTriangle, Package } from 'lucide-react'
+import { Wine, Users, AlertTriangle, Package, Calendar } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
+import { supabase } from '../../supabaseClient'
 
 const COLORS = {
     primary: '#5a0015',
@@ -34,6 +35,7 @@ export default function AdminDashboard() {
         total_admins: 0,
         stock_total: 0
     })
+    const [reservasPendientes, setReservasPendientes] = useState(0)
     const [loading, setLoading] = useState(true)
 
     useEffect(() => {
@@ -44,6 +46,16 @@ export default function AdminDashboard() {
         try {
             const data = await getWineStats()
             setStats(data)
+
+            // Fetch pending reservations count
+            const { count, error } = await supabase
+                .from('reservas')
+                .select('*', { count: 'exact', head: true })
+                .eq('estado', 'pendiente')
+
+            if (!error && count !== null) {
+                setReservasPendientes(count)
+            }
         } catch (error) {
             console.error('Error loading stats:', error)
         } finally {
@@ -67,6 +79,14 @@ export default function AdminDashboard() {
             color: '#2563eb',
             bgColor: 'rgba(37, 99, 235, 0.1)',
             action: () => navigate('/admin/usuarios')
+        },
+        {
+            title: 'Reservas Pendientes',
+            value: reservasPendientes,
+            icon: Calendar,
+            color: '#ff9800',
+            bgColor: 'rgba(255, 152, 0, 0.1)',
+            action: () => navigate('/admin/reservas')
         },
         {
             title: 'Alertas de Stock',
@@ -233,6 +253,36 @@ export default function AdminDashboard() {
                     >
                         <Users size={20} />
                         Gestionar Usuarios
+                    </button>
+
+                    <button
+                        onClick={() => navigate('/admin/reservas')}
+                        style={{
+                            padding: '15px 20px',
+                            background: '#ff9800',
+                            color: 'white',
+                            border: 'none',
+                            borderRadius: '8px',
+                            fontSize: '1rem',
+                            fontWeight: 600,
+                            cursor: 'pointer',
+                            transition: 'all 0.3s ease',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '10px',
+                            justifyContent: 'center'
+                        }}
+                        onMouseEnter={(e) => {
+                            e.currentTarget.style.background = '#f57c00'
+                            e.currentTarget.style.transform = 'scale(1.02)'
+                        }}
+                        onMouseLeave={(e) => {
+                            e.currentTarget.style.background = '#ff9800'
+                            e.currentTarget.style.transform = 'scale(1)'
+                        }}
+                    >
+                        <Calendar size={20} />
+                        Gestionar Reservas
                     </button>
 
                     <button

@@ -3,6 +3,7 @@ import './style.css';
 import { useNavigate } from 'react-router-dom';
 import { getCurrentUser, clearCurrentUser, isAdmin, WineUser } from './auth';
 import ChatBot from './components/ChatBot';
+import CartIcon from './components/CartIcon';
 
 const WineAndCheeseHome: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -311,6 +312,9 @@ const WineAndCheeseHome: React.FC = () => {
       </section>
       {/* Bot de ayuda flotante */}
       <ChatBot key={user ? user.id : 'guest'} />
+
+      {/* Ícono flotante del carrito */}
+      <CartIcon />
     </div>
   );
 };

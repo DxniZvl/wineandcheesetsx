@@ -2,7 +2,7 @@
 import { ReactNode } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { getCurrentUser, clearCurrentUser } from '../auth'
-import { Home, Wine, Users, LogOut, BarChart3 } from 'lucide-react'
+import { Home, Wine, Users, LogOut, BarChart3, Calendar } from 'lucide-react'
 
 interface AdminLayoutProps {
     children: ReactNode
@@ -40,7 +40,8 @@ export default function AdminLayout({ children, title }: AdminLayoutProps) {
     const menuItems = [
         { path: '/admin', icon: BarChart3, label: 'Dashboard' },
         { path: '/admin/vinos', icon: Wine, label: 'Gestión de Vinos' },
-        { path: '/admin/usuarios', icon: Users, label: 'Gestión de Usuarios' }
+        { path: '/admin/usuarios', icon: Users, label: 'Gestión de Usuarios' },
+        { path: '/admin/reservas', icon: Calendar, label: 'Gestión de Reservas' }
     ]
 
     return (

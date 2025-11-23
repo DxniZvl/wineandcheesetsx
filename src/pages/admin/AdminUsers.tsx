@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react'
 import AdminLayout from '../../components/AdminLayout'
 import { supabase } from '../../supabaseClient'
-import { Users, Search, Shield, Edit } from 'lucide-react'
+import { Users, Search, Shield, Edit, Trash2, Key } from 'lucide-react'
 
 const COLORS = {
     primary: '#5a0015',
@@ -31,6 +31,9 @@ export default function AdminUsers() {
     const [loading, setLoading] = useState(true)
     const [searchTerm, setSearchTerm] = useState('')
     const [filterRole, setFilterRole] = useState('all') // all, admin, user
+    const [showPasswordModal, setShowPasswordModal] = useState(false)
+    const [selectedUserId, setSelectedUserId] = useState<number | null>(null)
+    const [newPassword, setNewPassword] = useState('')
 
     useEffect(() => {
         loadUsers()
@@ -45,14 +48,16 @@ export default function AdminUsers() {
             const { data, error } = await supabase
                 .from('usuarios')
                 .select('*')
-                .order('created_at', { ascending: false })
 
-            if (error) throw error
+            if (error) {
+                console.error('Supabase error:', error)
+                throw error
+            }
 
             setUsers(data || [])
         } catch (error) {
             console.error('Error loading users:', error)
-            alert('Error al cargar los usuarios')
+            alert(`Error al cargar los usuarios: ${error instanceof Error ? error.message : 'Error desconocido'}`)
         } finally {
             setLoading(false)
         }
@@ -110,6 +115,62 @@ export default function AdminUsers() {
             console.error('Error updating permissions:', error)
             alert('Error al actualizar los permisos')
         }
+    }
+
+    const handleDeleteUser = async (userId: number, userName: string) => {
+        if (!confirm(`¿Estás seguro de eliminar al usuario ${userName}? Esta acción no se puede deshacer.`)) {
+            return
+        }
+
+        try {
+            const { error } = await supabase
+                .from('usuarios')
+                .delete()
+                .eq('id', userId)
+
+            if (error) throw error
+
+            alert('Usuario eliminado exitosamente')
+            loadUsers()
+        } catch (error) {
+            console.error('Error deleting user:', error)
+            alert('Error al eliminar el usuario')
+        }
+    }
+
+    const handlePasswordChange = async () => {
+        if (!selectedUserId || !newPassword) {
+            alert('Por favor ingresa una contraseña válida')
+            return
+        }
+
+        if (newPassword.length < 6) {
+            alert('La contraseña debe tener al menos 6 caracteres')
+            return
+        }
+
+        try {
+            const { error } = await supabase
+                .from('usuarios')
+                .update({ password: newPassword })
+                .eq('id', selectedUserId)
+
+            if (error) throw error
+
+            alert('Contraseña actualizada exitosamente')
+            setShowPasswordModal(false)
+            setNewPassword('')
+            setSelectedUserId(null)
+        } catch (error) {
+            console.error('Error updating password:', error)
+            alert('Error al actualizar la contraseña')
+        }
+    }
+
+    const openPasswordModal = (userId: number) => {
+        setSelectedUserId(userId)
+        setShowPasswordModal(true)
+        setNewPassword('')
     }
 
     if (loading) {
@@ -287,23 +348,51 @@ export default function AdminUsers() {
                                             {user.created_at ? new Date(user.created_at).toLocaleDateString('es-ES') : '-'}
                                         </td>
                                         <td style={tableCellStyle}>
-                                            <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-                                                {user.role === 'admin' && (
-                                                    <div style={{
+                                            <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+                                                <button
+                                                    onClick={() => openPasswordModal(user.id)}
+                                                    style={{
+                                                        padding: '6px 12px',
+                                                        background: '#2563eb',
+                                                        color: 'white',
+                                                        border: 'none',
+                                                        borderRadius: '6px',
+                                                        cursor: 'pointer',
+                                                        fontSize: '0.85rem',
+                                                        fontWeight: 600,
                                                         display: 'flex',
                                                         alignItems: 'center',
                                                         gap: '4px',
-                                                        padding: '4px 10px',
-                                                        background: 'rgba(90, 0, 21, 0.1)',
-                                                        borderRadius: '999px',
+                                                        transition: 'background 0.2s'
+                                                    }}
+                                                    onMouseEnter={(e) => e.currentTarget.style.background = '#1d4ed8'}
+                                                    onMouseLeave={(e) => e.currentTarget.style.background = '#2563eb'}
+                                                >
+                                                    <Key size={14} />
+                                                    Contraseña
+                                                </button>
+                                                <button
+                                                    onClick={() => handleDeleteUser(user.id, `${user.nombre} ${user.apellido}`)}
+                                                    style={{
+                                                        padding: '6px 12px',
+                                                        background: '#f44336',
+                                                        color: 'white',
+                                                        border: 'none',
+                                                        borderRadius: '6px',
+                                                        cursor: 'pointer',
                                                         fontSize: '0.85rem',
-                                                        color: COLORS.primary,
-                                                        fontWeight: 600
-                                                    }}>
-                                                        <Shield size={14} />
-                                                        Admin
-                                                    </div>
-                                                )}
+                                                        fontWeight: 600,
+                                                        display: 'flex',
+                                                        alignItems: 'center',
+                                                        gap: '4px',
+                                                        transition: 'background 0.2s'
+                                                    }}
+                                                    onMouseEnter={(e) => e.currentTarget.style.background = '#d32f2f'}
+                                                    onMouseLeave={(e) => e.currentTarget.style.background = '#f44336'}
+                                                >
+                                                    <Trash2 size={14} />
+                                                    Eliminar
+                                                </button>
                                             </div>
                                         </td>
                                     </tr>
@@ -331,6 +420,92 @@ export default function AdminUsers() {
                     <li><strong>Puede Editar</strong>: Permiso adicional para usuarios regulares (funcionalidad futura)</li>
                 </ul>
             </div>
+
+            {/* Modal de cambio de contraseña */}
+            {showPasswordModal && (
+                <div style={{
+                    position: 'fixed',
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    background: 'rgba(0,0,0,0.5)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    zIndex: 1000
+                }}>
+                    <div style={{
+                        background: 'white',
+                        borderRadius: '12px',
+                        padding: '30px',
+                        maxWidth: '400px',
+                        width: '90%',
+                        boxShadow: '0 20px 60px rgba(0,0,0,0.3)'
+                    }}>
+                        <h3 style={{ margin: '0 0 20px 0', color: COLORS.primary }}>
+                            Cambiar Contraseña
+                        </h3>
+                        <div style={{ marginBottom: '20px' }}>
+                            <label style={{
+                                display: 'block',
+                                marginBottom: '8px',
+                                fontWeight: 600,
+                                color: COLORS.text
+                            }}>
+                                Nueva Contraseña
+                            </label>
+                            <input
+                                type="password"
+                                value={newPassword}
+                                onChange={(e) => setNewPassword(e.target.value)}
+                                placeholder="Mínimo 6 caracteres"
+                                style={{
+                                    width: '100%',
+                                    padding: '10px',
+                                    border: `2px solid ${COLORS.border}`,
+                                    borderRadius: '8px',
+                                    fontSize: '1rem',
+                                    boxSizing: 'border-box'
+                                }}
+                            />
+                        </div>
+                        <div style={{ display: 'flex', gap: '10px', justifyContent: 'flex-end' }}>
+                            <button
+                                onClick={() => {
+                                    setShowPasswordModal(false)
+                                    setNewPassword('')
+                                    setSelectedUserId(null)
+                                }}
+                                style={{
+                                    padding: '10px 20px',
+                                    background: '#e0e0e0',
+                                    border: 'none',
+                                    borderRadius: '8px',
+                                    cursor: 'pointer',
+                                    fontWeight: 600
+                                }}
+                            >
+                                Cancelar
+                            </button>
+                            <button
+                                onClick={handlePasswordChange}
+                                style={{
+                                    padding: '10px 20px',
+                                    background: COLORS.primary,
+                                    color: 'white',
+                                    border: 'none',
+                                    borderRadius: '8px',
+                                    cursor: 'pointer',
+                                    fontWeight: 600
+                                }}
+                            >
+                                Guardar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
 
             <style>{`
         @keyframes pulse {

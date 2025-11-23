@@ -2,10 +2,12 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { Wine, MapPin, Filter, X, Search, ShoppingCart } from 'lucide-react';
 import Navbar from '../components/Navbar';
 import ChatBot from '../components/ChatBot';
+import CartIcon from '../components/CartIcon';
 import { supabase } from '../supabaseClient';
 import { getCurrentUser } from '../auth';
 import { isBirthday, applyBirthdayDiscount, getBirthdayDiscountAmount, BIRTHDAY_DISCOUNT_PERCENT } from '../utils/birthday';
 import { getAllWines, Wine as Vino } from '../services/wineService';
+import { addToCart } from '../utils/cartUtils';
 
 // Constantes de colores
 const COLORS = {
@@ -101,9 +103,24 @@ const CatalogoVinos: React.FC = () => {
   }, [vinos, filtroTipo, filtroPais, busqueda, precioMin, precioMax, ordenamiento, isBirthdayToday]);
 
   const agregarAlCarrito = (vino: Vino) => {
-    // Aquí implementarías la lógica de agregar al carrito
-    console.log('Agregado al carrito:', vino);
-    alert(`${vino.nombre} agregado al carrito`);
+    if (!vino.stock || vino.stock === 0) {
+      alert('Este vino no tiene stock disponible')
+      return
+    }
+
+    if (!vino.id) return
+
+    const success = addToCart({
+      vino_id: vino.id,
+      nombre: vino.nombre,
+      precio: isBirthdayToday ? applyBirthdayDiscount(vino.precio) : vino.precio,
+      imagen_url: vino.imagen,
+      stock: vino.stock
+    }, 1)
+
+    if (success) {
+      alert(`✅ ${vino.nombre} agregado al carrito`)
+    }
   };
 
   if (loading) {
@@ -646,6 +663,9 @@ const CatalogoVinos: React.FC = () => {
           </div>
         )}
       </div>
+
+      {/* Ícono flotante del carrito */}
+      <CartIcon />
 
       {/* ChatBot flotante */}
       <ChatBot />
