@@ -23,7 +23,7 @@ app.post('/api/chat', async (req, res) => {
   try {
     const { message } = req.body;
 
-    // Usando gemini-1.5-flash (versión estable)
+    // Usando gemini-2.0-flash (versión estable)
     const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
 
     const systemPrompt = `Eres un asistente virtual experto de Wine and Cheese, un restaurante elegante especializado en vinos y quesos en Alajuela, Costa Rica.
@@ -57,7 +57,13 @@ Usuario: ${message}`;
   }
 });
 
-const PORT = process.env.PORT || 3001;
-app.listen(PORT, () => {
-  console.log(`✅ Servidor corriendo en http://localhost:${PORT}`);
-});
+// Solo para desarrollo local
+if (process.env.NODE_ENV !== 'production') {
+  const PORT = process.env.PORT || 3001;
+  app.listen(PORT, () => {
+    console.log(`✅ Servidor corriendo en http://localhost:${PORT}`);
+  });
+}
+
+// Exportar para Vercel
+module.exports = app;

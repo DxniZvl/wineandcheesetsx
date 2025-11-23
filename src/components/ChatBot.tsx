@@ -58,7 +58,7 @@ const ChatBot: React.FC = () => {
 
     try {
       // Llamada al backend seguro
-      const response = await fetch('http://localhost:3001/api/chat', {
+      const response = await fetch('/api/chat', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
