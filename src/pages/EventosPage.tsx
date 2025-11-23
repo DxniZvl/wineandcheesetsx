@@ -1,3 +1,4 @@
+// src/pages/EventosPage.tsx
 import React, { useEffect, useRef } from "react";
 import Navbar from "../components/Navbar";
 import "../style.css";
@@ -5,12 +6,10 @@ import { getCurrentUser } from "../auth";
 import { useNavigate } from "react-router-dom";
 import ChatBot from "../components/ChatBot";
 
-
 export default function Eventos() {
   const rootRef = useRef<HTMLDivElement | null>(null);
   const navigate = useNavigate();
   const user = getCurrentUser();
-
 
   // Carrusel automático (mismo comportamiento que en Menu)
   useEffect(() => {
@@ -46,19 +45,19 @@ export default function Eventos() {
       <section className="menu-hero">
         <div className="carousel-container">
           <div className="carousel-slide active">
-            <img src="Imagenes Wine/evento1.jpg" alt="Cata de Vinos" />
+            <img src="/Imagenes Wine/evento1.jpg" alt="Cata de Vinos" />
           </div>
           <div className="carousel-slide">
-            <img src="Imagenes Wine/evento2.jpg" alt="Cena Maridaje" />
+            <img src="/Imagenes Wine/evento2.jpg" alt="Cena Maridaje" />
           </div>
           <div className="carousel-slide">
-            <img src="Imagenes Wine/evento3.jpg" alt="Evento Privado" />
+            <img src="/Imagenes Wine/evento3.jpg" alt="Evento Privado" />
           </div>
           <div className="carousel-slide">
-            <img src="Imagenes Wine/evento4.jpg" alt="Celebración" />
+            <img src="/Imagenes Wine/evento4.jpg" alt="Celebración" />
           </div>
           <div className="carousel-slide">
-            <img src="Imagenes Wine/evento5.jpg" alt="Degustación" />
+            <img src="/Imagenes Wine/evento5.jpg" alt="Degustación" />
           </div>
         </div>
 
@@ -84,7 +83,7 @@ export default function Eventos() {
       <section
         style={{
           padding: "60px 20px",
-          backgroundImage: "url('Imagenes Wine/vino-fondo.jpg')",
+          backgroundImage: "url('/Imagenes Wine/vino-fondo.jpg')",
           backgroundSize: "cover",
           backgroundPosition: "center",
           position: "relative",
@@ -255,223 +254,37 @@ function EventosSlider() {
     {
       nombre: "Eventos Privados",
       descripcion:
-        "Celebra ocasiones especiales en un ambiente íntimo y elegante. Organizamos cumpleaños, aniversarios y reuniones corporativas con menús personalizados.",
-      precio: "Desde $90 por persona",
-    },
-    {
-      nombre: "Curso de Sommelier",
-      descripcion:
-        "Aprende técnicas de cata, maridaje y servicio del vino. Curso de 4 sesiones con certificación y degustación de más de 20 variedades.",
-      precio: "Desde $200 por persona",
-    },
-    {
-      nombre: "Degustación de Quesos",
-      descripcion:
-        "Explora la diversidad del mundo quesero con una selección artesanal nacional e internacional, acompañada de vinos que realzan cada sabor.",
-      precio: "Desde $65 por persona",
+        "Celebra tus momentos especiales con nosotros. Ofrecemos espacios exclusivos y menús personalizados para bodas, aniversarios y reuniones corporativas.",
+      precio: "Cotización personalizada",
     },
   ];
 
-  const trackRef = useRef<HTMLDivElement | null>(null);
-  const indexRef = useRef(0);
-
-  // desplazamiento automático
-  useEffect(() => {
-    const track = trackRef.current;
-    if (!track) return;
-    const move = () => {
-      indexRef.current = (indexRef.current + 1) % cards.length;
-      track.style.transform = `translateX(-${indexRef.current * 100}%)`;
-    };
-    const id = window.setInterval(move, 4500);
-    return () => window.clearInterval(id);
-  }, []);
-
-  // manejo manual
-  const moveSlide = (dir: "prev" | "next") => {
-    const track = trackRef.current;
-    if (!track) return;
-    if (dir === "prev")
-      indexRef.current =
-        (indexRef.current - 1 + cards.length) % cards.length;
-    else indexRef.current = (indexRef.current + 1) % cards.length;
-    track.style.transform = `translateX(-${indexRef.current * 100}%)`;
-  };
-
   return (
-    <div
-      style={{
-        position: "relative",
-        // allow circular nav buttons to overflow outside the rounded frame
-        overflow: "visible",
-        borderRadius: 16,
-        maxWidth: "800px",
-        margin: "0 auto",
-      }}
-    >
-      {/* inner frame keeps the rounded clipping for the slides */}
-      <div
-        style={{
-          overflow: "hidden",
-          borderRadius: 16,
-        }}
-      >
-        {/* Pista de eventos */}
-        <div
-          ref={trackRef}
-          style={{
-            display: "flex",
-            transition: "transform .6s ease",
-            willChange: "transform",
-          }}
-        >
-          {cards.map((card) => (
-            <div
-              key={card.nombre}
-              style={{
-                minWidth: "100%",
-                background: "#f9f9f9",
-                padding: 40,
-                boxSizing: "border-box",
-                borderRadius: 20,
-                boxShadow: "0 10px 30px rgba(0,0,0,0.1)",
-                textAlign: "center",
-              }}
-            >
-              <h3
-                style={{
-                  fontFamily: '"Playfair Display", serif',
-                  fontSize: "2rem",
-                  color: "#d4af37",
-                  margin: "0 0 20px",
-                }}
-              >
-                {card.nombre}
-              </h3>
-              <p
-                style={{
-                  fontSize: "1.05rem",
-                  color: "#555",
-                  lineHeight: 1.7,
-                  marginBottom: 20,
-                }}
-              >
-                {card.descripcion}
-              </p>
-              <p
-                style={{
-                  fontWeight: 700,
-                  color: "#2c1810",
-                  fontSize: "1.2rem",
-                  margin: 0,
-                }}
-              >
-                {card.precio}
-              </p>
-            </div>
-          ))}
+    <div className="menu-grid">
+      {cards.map((card, index) => (
+        <div className="menu-item" key={index}>
+          <div className="item-info">
+            <h3 className="item-name">{card.nombre}</h3>
+            <p className="item-description">{card.descripcion}</p>
+          </div>
+          <div className="item-price">{card.precio}</div>
         </div>
-      </div>
-
-      {/* Botones laterales: posicionados parcialmente fuera del frame */}
-      <button
-        onClick={() => moveSlide("prev")}
-        style={{
-          position: "absolute",
-          top: "50%",
-          left: -65,
-          transform: "translateY(-50%)",
-          background: "#5a0015",
-          color: "white",
-          border: "none",
-          borderRadius: "50%",
-          width: 50,
-          height: 50,
-          fontSize: 22,
-          fontWeight: 700,
-          cursor: "pointer",
-          boxShadow: "0 5px 15px rgba(0,0,0,.3)",
-          transition: "all .3s ease",
-        }}
-        onMouseEnter={(e) => (e.currentTarget.style.background = "#8b0505")}
-        onMouseLeave={(e) => (e.currentTarget.style.background = "#5a0015")}
-      >
-        ‹
-      </button>
-      <button
-        onClick={() => moveSlide("next")}
-        style={{
-          position: "absolute",
-          top: "50%",
-          right: -65,
-          transform: "translateY(-50%)",
-          background: "#5a0015",
-          color: "white",
-          border: "none",
-          borderRadius: "50%",
-          width: 50,
-          height: 50,
-          fontSize: 22,
-          fontWeight: 700,
-          cursor: "pointer",
-          boxShadow: "0 5px 15px rgba(0,0,0,.3)",
-          transition: "all .3s ease",
-        }}
-        onMouseEnter={(e) => (e.currentTarget.style.background = "#8b0505")}
-        onMouseLeave={(e) => (e.currentTarget.style.background = "#5a0015")}
-      >
-        ›
-      </button>
+      ))}
     </div>
   );
 }
 
-
-function Categoria({
-  titulo,
-  juegos,
-}: {
-  titulo: string;
-  juegos: [string, string][];
-}) {
+function Categoria({ titulo, juegos }: { titulo: string; juegos: string[][] }) {
   return (
-    <div
-      style={{
-        background: "#fff",
-        borderRadius: 14,
-        padding: 22,
-        boxShadow: "0 6px 18px rgba(0,0,0,.08)",
-      }}
-    >
-      <h3
-        style={{
-          fontFamily: '"Playfair Display", serif',
-          color: "#5a0015",
-          textAlign: "center",
-          marginTop: 0,
-        }}
-      >
-        {titulo}
-      </h3>
-      <div style={{ display: "grid", gap: 10 }}>
-        {juegos.map(([name, desc]) => (
-          <div
-            key={name}
-            style={{
-              padding: 12,
-              borderRadius: 8,
-              transition: "transform .2s ease, background .2s ease",
-            }}
-          >
-            <div>
-              <h4 style={{ margin: "0 0 6px", color: "#2c1810" }}>{name}</h4>
-              <p style={{ margin: 0, color: "#666", fontSize: ".95rem" }}>
-                {desc}
-              </p>
-            </div>
-          </div>
+    <div className="package-card">
+      <h3 className="package-name">{titulo}</h3>
+      <ul className="package-includes">
+        {juegos.map(([nombre, desc]) => (
+          <li key={nombre}>
+            <strong>{nombre}:</strong> {desc}
+          </li>
         ))}
-      </div>
+      </ul>
     </div>
   );
 }

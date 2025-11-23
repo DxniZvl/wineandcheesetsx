@@ -7,7 +7,7 @@ import "./style.css";
 // Páginas que ya tienes
 import Home from "./App";              // alias para claridad: Home = App
 import Menu from "./pages/MenuPage";
-import Eventos from "./pages/Eventos";
+import Eventos from "./pages/EventosPage";
 import Login from "./pages/Login";
 import Registro from "./pages/Registro";
 import Reserva from "./pages/Reserva";
