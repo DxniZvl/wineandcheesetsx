@@ -7,17 +7,11 @@ import { fileURLToPath } from 'url'
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
 
-// Configurar Supabase
-const supabaseUrl = process.env.VITE_SUPABASE_URL
-const supabaseKey = process.env.VITE_SUPABASE_ANON_KEY
+// Configurar Supabase con credenciales
+const supabaseUrl = 'https://vkuvjntavonxllojdsnm.supabase.co'
+const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZrdXZqbnRhdm9ueGxsb2pkc25tIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI5MDM1NjAsImV4cCI6MjA3ODQ3OTU2MH0.WRz9ibfaHwtqIJRxLE4jnHOacDTwU6WmYVo7aKJb4w0'
 
-if (!supabaseUrl || !supabaseKey) {
-    console.error('❌ Error: Variables de entorno de Supabase no encontradas')
-    console.log('Por favor, asegúrate de que el archivo .env tiene:')
-    console.log('  - VITE_SUPABASE_URL')
-    console.log('  - VITE_SUPABASE_ANON_KEY')
-    process.exit(1)
-}
+console.log('✅ Credenciales de Supabase configuradas\n')
 
 const supabase = createClient(supabaseUrl, supabaseKey)
 
