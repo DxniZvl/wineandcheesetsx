@@ -260,7 +260,7 @@ function EventosSlider() {
   ];
 
   return (
-    <div className="menu-grid">
+    <div className="menu-grid eventos-slider">
       {cards.map((card, index) => (
         <div className="menu-item" key={index}>
           <div className="item-info">

@@ -1366,3 +1366,42 @@ body {
   cursor: pointer;
   color: inherit;
 }
+
+/* =========================
+   EVENTOS SLIDER (Light Theme)
+   ========================== */
+.eventos-slider .menu-item {
+  border-bottom: 1px solid #ddd;
+  padding: 25px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  border: 1px solid #eee;
+  /* Marco completo */
+  margin-bottom: 15px;
+}
+
+.eventos-slider .menu-item:hover {
+  border-left: 5px solid #d4af37;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+.eventos-slider .item-name {
+  color: #2c1810;
+  /* Dark brown */
+  font-weight: 700;
+}
+
+.eventos-slider .item-description {
+  color: #4a4a4a;
+  /* Dark gray */
+  font-weight: 500;
+  /* Letra mejor definida */
+  font-size: 1.05rem;
+}
+
+.eventos-slider .item-price {
+  color: #d4af37;
+  font-weight: 700;
+}
