@@ -947,8 +947,7 @@ body {
   justify-content: space-between;
   align-items: center;
   padding: 30px;
-  border-bottom: 1px solid rgba(255, 255, 255, .1);
-  border-left: 2px solid #d4af37;
+  border: 2px solid #d4af37;
   border-radius: 8px;
   background: rgba(255, 255, 255, .02);
   margin-bottom: 15px;
@@ -956,11 +955,10 @@ body {
 }
 
 .menu-item:hover {
-  padding-left: 35px;
-  border-left: 4px solid #d4af37;
+  border-width: 3px;
   background: rgba(255, 255, 255, .05);
-  transform: translateX(5px);
-  box-shadow: 0 4px 15px rgba(212, 175, 55, 0.2)
+  transform: scale(1.02);
+  box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3)
 }
 
 .item-info {
@@ -970,7 +968,7 @@ body {
 .item-name {
   font-family: "Playfair Display", serif;
   font-size: 1.5rem;
-  color: #fff;
+  color: #2c1810;
   margin-bottom: 8px;
   font-weight: 600
 }
