@@ -947,7 +947,7 @@ body {
   justify-content: space-between;
   align-items: center;
   padding: 30px;
-  border: 2px solid #d4af37;
+  border-left: 2px solid #d4af37;
   border-radius: 8px;
   background: rgba(255, 255, 255, .02);
   margin-bottom: 15px;
@@ -955,9 +955,10 @@ body {
 }
 
 .menu-item:hover {
-  border-width: 3px;
+  border-left-width: 4px;
+  padding-left: 32px;
   background: rgba(255, 255, 255, .05);
-  transform: scale(1.02);
+  transform: translateX(3px);
   box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3)
 }
 
