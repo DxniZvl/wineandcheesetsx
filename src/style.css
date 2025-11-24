@@ -138,18 +138,6 @@ body {
 .reserva-btn:hover {
   background: #8b0505;
   transform: scale(1.05) translateY(-2px);
-  box-shadow: 0 10px 25px rgba(237, 226, 226, 0.6);
-  border-color: rgba(255, 255, 255, 0.3);
-}
-
-.reserva-btn:active {
-  transform: scale(0.98) translateY(0);
-  box-shadow: 0 4px 15px rgba(255, 68, 68, 0.4);
-}
-
-/* Sección Hero */
-.hero {
-  background-image: url('/Imagenes Wine/Imagen3.jpg');
   background-size: cover;
   background-position: center;
   height: 100vh;
