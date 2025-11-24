@@ -91,6 +91,60 @@ body {
   width: 0;
   height: 2px;
   background: #f8f8f8;
+  transition: width 0.3s ease;
+}
+
+.nav-links a:hover::after {
+  width: 100%;
+}
+
+/* BOTÓN DE RESERVAS */
+.reserva-btn {
+  background: #5a0015;
+  color: #fff !important;
+  text-decoration: none !important;
+  padding: 14px 28px;
+  border-radius: 35px;
+  font-weight: bold;
+  font-size: 16px;
+  box-shadow: 0 6px 20px rgba(90, 0, 21, 0.4);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  text-shadow: none;
+  border: 2px solid transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 120px;
+  white-space: nowrap;
+  position: relative;
+  overflow: hidden;
+  transition: width 0.3s ease;
+}
+
+.nav-links a:hover::after {
+  width: 100%;
+}
+
+/* BOTÓN DE RESERVAS */
+.reserva-btn {
+  background: #5a0015;
+  color: #fff !important;
+  text-decoration: none !important;
+  padding: 14px 28px;
+  border-radius: 35px;
+  font-weight: bold;
+  font-size: 16px;
+  box-shadow: 0 6px 20px rgba(90, 0, 21, 0.4);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  text-shadow: none;
+  border: 2px solid transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 120px;
+  white-space: nowrap;
+  position: relative;
+  overflow: hidden;
 }
 
 .reserva-btn::before {
