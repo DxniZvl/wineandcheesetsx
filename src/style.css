@@ -118,33 +118,6 @@ body {
   white-space: nowrap;
   position: relative;
   overflow: hidden;
-  transition: width 0.3s ease;
-}
-
-.nav-links a:hover::after {
-  width: 100%;
-}
-
-/* BOTÓN DE RESERVAS */
-.reserva-btn {
-  background: #5a0015;
-  color: #fff !important;
-  text-decoration: none !important;
-  padding: 14px 28px;
-  border-radius: 35px;
-  font-weight: bold;
-  font-size: 16px;
-  box-shadow: 0 6px 20px rgba(90, 0, 21, 0.4);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  text-shadow: none;
-  border: 2px solid transparent;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 120px;
-  white-space: nowrap;
-  position: relative;
-  overflow: hidden;
 }
 
 .reserva-btn::before {
@@ -165,6 +138,18 @@ body {
 .reserva-btn:hover {
   background: #8b0505;
   transform: scale(1.05) translateY(-2px);
+  box-shadow: 0 10px 25px rgba(237, 226, 226, 0.6);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.reserva-btn:active {
+  transform: scale(0.98) translateY(0);
+  box-shadow: 0 4px 15px rgba(255, 68, 68, 0.4);
+}
+
+/* Sección Hero */
+.hero {
+  background-image: url('/Imagenes Wine/Imagen3.jpg');
   background-size: cover;
   background-position: center;
   height: 100vh;
