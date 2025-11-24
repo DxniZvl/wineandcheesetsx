@@ -213,19 +213,6 @@ body {
 .vino-button {
   background: #5a0015;
   color: white;
-  padding: 16px 32px;
-  border-radius: 30px;
-  text-decoration: none;
-  font-weight: bold;
-  font-size: 16px;
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
-  transition: all 0.3s ease;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-}
-
-.vino-button:hover {
-  background: #890725;
   transform: scale(1.05) translateY(-2px);
   box-shadow: 0 12px 24px rgba(128, 0, 32, 0.5);
   border: 2px solid #dedcd3;
@@ -946,362 +933,305 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 30px 0;
-  border-bottom: 1px solid rgba(255, 255, 255, .1);
-  transition: all .3s ease
+  letter-spacing: .2px;
 }
 
-.menu-item:hover {
-  padding-left: 20px;
-  border-left: 3px solid #d4af37
+.wine-alert .msg {
+  margin: 0;
+  line-height: 1.45;
 }
 
-.item-info {
-  flex: 1
+.wine-alert .close {
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  font-size: 18px;
+  line-height: 1;
+  color: #8a2620;
+  padding: 2px 6px;
+  border-radius: 8px;
 }
 
-.item-name {
-  font-family: "Playfair Display", serif;
-  font-size: 1.5rem;
-  color: #fff;
-  margin-bottom: 8px;
-  font-weight: 600
+.wine-alert .close:hover {
+  background: rgba(0, 0, 0, 0.06);
 }
 
-.item-description {
-  color: #ccc;
-
-  .wine-alert {
-    position: relative;
-    display: grid;
-    grid-template-columns: 28px 1fr auto;
-    gap: 12px;
-    align-items: start;
-    padding: 14px 16px;
-    border-radius: 12px;
-    border: 1px solid rgba(192, 57, 43, 0.25);
-    background: linear-gradient(180deg, rgba(192, 57, 43, 0.08), rgba(192, 57, 43, 0.03));
-    color: #621a16;
-    box-shadow: 0 10px 24px rgba(192, 57, 43, 0.12);
-    animation: drop-in .35s ease-out both;
-    margin-bottom: 14px;
+@keyframes drop-in {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
   }
 
-  .wine-alert .icon {
-    width: 28px;
-    height: 28px;
-    background: #c0392b;
-    color: #fff;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 700;
-    box-shadow: 0 6px 16px rgba(192, 57, 43, 0.35);
-  }
-
-  .wine-alert .title {
-    font-weight: 700;
-    margin-bottom: 2px;
-    letter-spacing: .2px;
-  }
-
-  .wine-alert .msg {
-    margin: 0;
-    line-height: 1.45;
-  }
-
-  .wine-alert .close {
-    background: transparent;
-    border: 0;
-    cursor: pointer;
-    font-size: 18px;
-    line-height: 1;
-    color: #8a2620;
-    padding: 2px 6px;
-    border-radius: 8px;
-  }
-
-  .wine-alert .close:hover {
-    background: rgba(0, 0, 0, 0.06);
-  }
-
-  @keyframes drop-in {
-    from {
-      opacity: 0;
-      transform: translateY(-6px);
-    }
-
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  /* Marca y sacude inputs con error */
-  .input-error {
-    border-color: #c0392b !important;
-  }
-
-  .shake {
-    animation: shake .25s ease-in-out 0s 1;
-  }
-
-  @keyframes shake {
-
-    10%,
-    90% {
-      transform: translateX(-2px);
-    }
-
-    20%,
-    80% {
-      transform: translateX(3px);
-    }
-
-    30%,
-    50%,
-    70% {
-      transform: translateX(-4px);
-    }
-
-    40%,
-    60% {
-      transform: translateX(4px);
-    }
-  }
-
-  /* Contenedor de usuario en el navbar */
-  .user-menu {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-
-  /* Texto "¡Hola, Daniel!" */
-  .user-menu span {
-    color: #ffffff;
-    font-weight: 600;
-  }
-
-  /* Botón de cerrar sesión */
-  .logout-btn {
-    background: transparent;
-    border: 1px solid #ffffff;
-    color: #ffffff;
-    padding: 6px 14px;
-    border-radius: 999px;
-    cursor: pointer;
-    font-size: 0.9rem;
-    font-weight: 600;
-    transition: background 0.2s ease, color 0.2s ease,
-      transform 0.1s ease, box-shadow 0.1s ease;
-  }
-
-  /* Hover bonito */
-  .logout-btn:hover {
-    background: #ffffff;
-    color: #5a0015;
-    /* o el vino tinto que uses en .reserva-btn */
-    transform: translateY(-1px);
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
-  }
-
-  /* Click */
-  .logout-btn:active {
+  to {
+    opacity: 1;
     transform: translateY(0);
-    box-shadow: none;
+  }
+}
+
+/* Marca y sacude inputs con error */
+.input-error {
+  border-color: #c0392b !important;
+}
+
+.shake {
+  animation: shake .25s ease-in-out 0s 1;
+}
+
+@keyframes shake {
+
+  10%,
+  90% {
+    transform: translateX(-2px);
   }
 
-  /* =========================
+  20%,
+  80% {
+    transform: translateX(3px);
+  }
+
+  30%,
+  50%,
+  70% {
+    transform: translateX(-4px);
+  }
+
+  40%,
+  60% {
+    transform: translateX(4px);
+  }
+}
+
+/* Contenedor de usuario en el navbar */
+.user-menu {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Texto "¡Hola, Daniel!" */
+.user-menu span {
+  color: #ffffff;
+  font-weight: 600;
+}
+
+/* Botón de cerrar sesión */
+.logout-btn {
+  background: transparent;
+  border: 1px solid #ffffff;
+  color: #ffffff;
+  padding: 6px 14px;
+  border-radius: 999px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 600;
+  transition: background 0.2s ease, color 0.2s ease,
+    transform 0.1s ease, box-shadow 0.1s ease;
+}
+
+/* Hover bonito */
+.logout-btn:hover {
+  background: #ffffff;
+  color: #5a0015;
+  /* o el vino tinto que uses en .reserva-btn */
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+}
+
+/* Click */
+.logout-btn:active {
+  transform: translateY(0);
+  box-shadow: none;
+}
+
+/* =========================
    MIS RESERVAS (pagina /mis-reservas)
    ========================== */
 
-  .reservas-lista {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    margin-top: 10px;
-  }
+.reservas-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 10px;
+}
 
-  /* Tarjeta de cada reserva */
+/* Tarjeta de cada reserva */
+.reserva-card {
+  border-radius: 18px;
+  padding: 16px 20px;
+  background: #fdfdfd;
+  border: 1px solid #f0e3e3;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.06);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.reserva-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.10);
+}
+
+/* Encabezado: fecha + estado */
+.reserva-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.reserva-fecha {
+  font-weight: 600;
+  color: #5a0015;
+  font-size: 0.95rem;
+}
+
+/* Badges de estado */
+.estado-badge {
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: capitalize;
+  letter-spacing: 0.02em;
+}
+
+.estado-pendiente {
+  background: #fff3cd;
+  color: #856404;
+}
+
+.estado-confirmada {
+  background: #d4edda;
+  color: #155724;
+}
+
+.estado-cancelada {
+  background: #f8d7da;
+  color: #721c24;
+}
+
+/* Cuerpo de la tarjeta */
+.reserva-card-body {
+  margin-top: 4px;
+}
+
+.reserva-tipo {
+  font-weight: 600;
+  margin-bottom: 4px;
+  color: #333;
+}
+
+.reserva-detalle {
+  font-size: 0.9rem;
+  color: #555;
+}
+
+/* Botón tipo enlace (para "Reservar ahora") */
+.link-button {
+  border: none;
+  background: none;
+  padding: 0;
+  color: #e6492d;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.link-button:hover {
+  text-decoration: underline;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
   .reserva-card {
-    border-radius: 18px;
-    padding: 16px 20px;
-    background: #fdfdfd;
-    border: 1px solid #f0e3e3;
-    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.06);
-    transition: transform 0.15s ease, box-shadow 0.15s ease;
+    padding: 14px 14px;
   }
 
-  .reserva-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.10);
-  }
-
-  /* Encabezado: fecha + estado */
   .reserva-card-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 8px;
-  }
-
-  .reserva-fecha {
-    font-weight: 600;
-    color: #5a0015;
-    font-size: 0.95rem;
-  }
-
-  /* Badges de estado */
-  .estado-badge {
-    padding: 4px 10px;
-    border-radius: 999px;
-    font-size: 0.8rem;
-    font-weight: 600;
-    text-transform: capitalize;
-    letter-spacing: 0.02em;
-  }
-
-  .estado-pendiente {
-    background: #fff3cd;
-    color: #856404;
-  }
-
-  .estado-confirmada {
-    background: #d4edda;
-    color: #155724;
-  }
-
-  .estado-cancelada {
-    background: #f8d7da;
-    color: #721c24;
-  }
-
-  /* Cuerpo de la tarjeta */
-  .reserva-card-body {
-    margin-top: 4px;
-  }
-
-  .reserva-tipo {
-    font-weight: 600;
-    margin-bottom: 4px;
-    color: #333;
-  }
-
-  .reserva-detalle {
-    font-size: 0.9rem;
-    color: #555;
-  }
-
-  /* Botón tipo enlace (para "Reservar ahora") */
-  .link-button {
-    border: none;
-    background: none;
-    padding: 0;
-    color: #e6492d;
-    font-weight: 600;
-    cursor: pointer;
-    text-decoration: none;
-  }
-
-  .link-button:hover {
-    text-decoration: underline;
-  }
-
-  /* Responsive */
-  @media (max-width: 600px) {
-    .reserva-card {
-      padding: 14px 14px;
-    }
-
-    .reserva-card-header {
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 4px;
-    }
-  }
-
-  .wine-alert {
-    display: flex;
+    flex-direction: column;
     align-items: flex-start;
-    gap: 10px;
-    padding: 12px 14px;
-    border-radius: 10px;
-    background: #fff3f3;
-    border: 1px solid #f5c2c7;
-    color: #842029;
-    margin-bottom: 16px;
-    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.06);
+    gap: 4px;
   }
+}
 
-  .wine-alert .icon {
-    width: 28px;
-    height: 28px;
-    border-radius: 999px;
-    background: #842029;
-    color: #fff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 700;
-    margin-top: 2px;
-  }
+.wine-alert {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 12px 14px;
+  border-radius: 10px;
+  background: #fff3f3;
+  border: 1px solid #f5c2c7;
+  color: #842029;
+  margin-bottom: 16px;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.06);
+}
 
-  .wine-alert .title {
-    font-weight: 600;
-    margin-bottom: 2px;
-  }
+.wine-alert .icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 999px;
+  background: #842029;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  margin-top: 2px;
+}
 
-  .wine-alert .msg {
-    margin: 0;
-    font-size: 0.9rem;
-  }
+.wine-alert .title {
+  font-weight: 600;
+  margin-bottom: 2px;
+}
 
-  .wine-alert .close {
-    margin-left: auto;
-    border: none;
-    background: transparent;
-    font-size: 1.1rem;
-    cursor: pointer;
-    color: inherit;
-  }
+.wine-alert .msg {
+  margin: 0;
+  font-size: 0.9rem;
+}
 
-  /* =========================
+.wine-alert .close {
+  margin-left: auto;
+  border: none;
+  background: transparent;
+  font-size: 1.1rem;
+  cursor: pointer;
+  color: inherit;
+}
+
+/* =========================
    EVENTOS SLIDER (Light Theme)
    ========================== */
-  .eventos-slider .menu-item {
-    border-bottom: 1px solid #ddd;
-    padding: 25px;
-    background: #fff;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-    border: 1px solid #eee;
-    /* Marco completo */
-    margin-bottom: 15px;
-  }
+.eventos-slider .menu-item {
+  border-bottom: 1px solid #ddd;
+  padding: 25px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  border: 1px solid #eee;
+  /* Marco completo */
+  margin-bottom: 15px;
+}
 
-  .eventos-slider .menu-item:hover {
-    border-left: 5px solid #d4af37;
-    transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-  }
+.eventos-slider .menu-item:hover {
+  border-left: 5px solid #d4af37;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
 
-  .eventos-slider .item-name {
-    color: #2c1810;
-    /* Dark brown */
-    font-weight: 700;
-  }
+.eventos-slider .item-name {
+  color: #2c1810;
+  /* Dark brown */
+  font-weight: 700;
+}
 
-  .eventos-slider .item-description {
-    color: #4a4a4a;
-    /* Dark gray */
-    font-weight: 500;
-    /* Letra mejor definida */
-    font-size: 1.05rem;
-  }
+.eventos-slider .item-description {
+  color: #4a4a4a;
+  /* Dark gray */
+  font-weight: 500;
+  /* Letra mejor definida */
+  font-size: 1.05rem;
+}
 
-  .eventos-slider .item-price {
-    color: #d4af37;
-    font-weight: 700;
-  }
+.eventos-slider .item-price {
+  color: #d4af37;
+  font-weight: 700;
+}
