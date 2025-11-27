@@ -1373,3 +1373,80 @@ body {
   cursor: pointer;
   color: inherit;
 }
+
+
+.wine-alert .close {
+  margin-left: auto;
+  border: none;
+  background: transparent;
+  font-size: 1.1rem;
+  cursor: pointer;
+  color: inherit;
+}
+
+/* Eventos con fondo blanco */
+section[style*="background: #fff"] .item-name,
+section[style*="background:#fff"] .item-name {
+  color: #2c1810 !important;
+}
+
+section[style*="background: #fff"] .item-description,
+section[style*="background:#fff"] .item-description {
+  color: #555 !important;
+}
+
+/* Forzar colores oscuros por defecto en menu-item */
+.menu-item .item-name {
+  color: #2c1810;
+}
+
+.menu-item .item-description {
+  color: #555;
+}
+
+.menu-item .item-details {
+  color: #999;
+}
+
+/* Solo en menu-container (fondo oscuro) los hacemos claros */
+.menu-container .item-name {
+  color: #fff !important;
+}
+
+.menu-container .item-description {
+  color: #ccc !important;
+}
+
+.menu-container .item-details {
+  color: #999 !important;
+}
+
+/* Juegos - textos más suaves para mejor legibilidad */
+.package-card {
+  color: #555;
+}
+
+.package-card .package-name {
+  color: #d4af37;
+}
+
+.package-includes li {
+  color: #666;
+  margin-bottom: 10px;
+  padding-left: 25px;
+  position: relative;
+}
+
+.package-includes li strong {
+  color: #444;
+  font-weight: 700;
+}
+
+/* Solo en menu-container (fondo oscuro) los hacemos claros */
+.menu-container .package-includes li {
+  color: #ccc !important;
+}
+
+.menu-container .package-includes li strong {
+  color: #fff !important;
+}
